@@ -120,7 +120,8 @@ def ray_tracing(width, height, rayo, so, n1, obj, res, nl, R1, R2, dl, pixels, w
                 pixels[pos_x_prime[2], pos_y_prime[2]] = (pixel[0], pixel[1], pixel[2])
                 next
             elif rayo == 1: #parallel
-                new_gray = [(int(pixel[0]) + pixels[pos_x_prime[0], pos_y_prime[0]][0])/2, (int(pixel[1]) + pixels[pos_x_prime[1], pos_y_prime[1]][0])/2, (int(pixel[2]) + pixels[pos_x_prime[2], pos_y_prime[2]][0])/2]
+                #new_gray = [(int(pixel[0]) + pixels[pos_x_prime[0], pos_y_prime[0]][0])/2, (int(pixel[1]) + pixels[pos_x_prime[1], pos_y_prime[1]][0])/2, (int(pixel[2]) + pixels[pos_x_prime[2], pos_y_prime[2]][0])/2]
+                new_gray = [int(pixel[0]), int(pixel[1]), int(pixel[2])]
                 pix_fin = ( int(new_gray[0]), int(new_gray[1]), int(new_gray[2]) )
                 pixels[pos_x_prime[0], pos_y_prime[0]] = (pix_fin[0], pixels[pos_x_prime[0], pos_y_prime[0]][1],pixels[pos_x_prime[0], pos_y_prime[0]][2])
                 pixels[pos_x_prime[1], pos_y_prime[1]] = (pixels[pos_x_prime[1], pos_y_prime[1]][0], pix_fin[1], pixels[pos_x_prime[1], pos_y_prime[1]][2])

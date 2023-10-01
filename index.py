@@ -48,7 +48,7 @@ pixels = image.load()
 interpolate = False
 
 #Compute the image with chief ray
-#pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, nl, R1, R2, dl, aberration, pixels, width_output, height_output, si2, Mt)
+#pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, nl, R1, R2, dl, pixels, width_output, height_output, si2, Mt)
 
 #Compute the cummulated image with parallel ray
 pixels = ray_tracing(width, height, PARALLEL_RAY, so, n1, obj, res, nl, R1, R2, dl, pixels, width_output, height_output, si2, Mt)
