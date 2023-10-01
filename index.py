@@ -9,7 +9,13 @@ from functions import*
 
 df = pd.read_json("lenses.json") 
 
-obj = Image.open("img/moon.png", "r")
+obj = Image.open("img/mars.jpg", "r")
+
+n1 = 1
+nl = 1
+R1 = 1
+R2 = 2
+dl = 1
  
 CHIEF_RAY = 0
 PARALLEL_RAY = 1
@@ -26,8 +32,6 @@ so2 = si1-(f1-f2)
 si2 = (f2*si1)/(si1-f2)
 
 Mt = (-si1/so)*(si2/so2)
-print(si2)
-print(Mt)
 
 width, height = obj.size
 width_output = int(width*(abs(Mt)*res))
@@ -36,20 +40,9 @@ height_output = int(height*(abs(Mt)*res))
 width_output = int(width)
 height_output = int(height)
 
-print(width, width_output, height, height_output)
-
 image = Image.new("RGB", (width_output, height_output), "white")
 
 pixels = image.load()
-
-n1 = 1
-nl = 1
-R1 = 1
-R2 = 2
-dl = 1
-
-#Model aberration ?
-aberration = False
 
 #Interpolation ?
 interpolate = False
@@ -58,7 +51,7 @@ interpolate = False
 #pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, nl, R1, R2, dl, aberration, pixels, width_output, height_output, si2, Mt)
 
 #Compute the cummulated image with parallel ray
-pixels = ray_tracing(width, height, PARALLEL_RAY, so, n1, obj, res, nl, R1, R2, dl, aberration, pixels, width_output, height_output, si2, Mt)
+pixels = ray_tracing(width, height, PARALLEL_RAY, so, n1, obj, res, nl, R1, R2, dl, pixels, width_output, height_output, si2, Mt)
 
 #Interpolating
 if (interpolate):

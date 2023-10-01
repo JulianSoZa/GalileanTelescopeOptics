@@ -16,17 +16,17 @@ height_output = 252
 pixelsR, pixelsG, pixelsB = R, G, B
 
 if (interpolate):
-  pixelsR = interpolationG(pixelsR, width_output, height_output)
+  pixelsR = interpolation(pixelsR, width_output, height_output)
   print ("Interpolation performed")
   pass
 
 if (interpolate):
-  pixelsG = interpolationG(pixelsG, width_output, height_output)
+  pixelsG = interpolation(pixelsG, width_output, height_output)
   print ("Interpolation performed")
   pass
 
 if (interpolate):
-  pixelsB = interpolationG(pixelsB, width_output, height_output)
+  pixelsB = interpolation(pixelsB, width_output, height_output)
   print ("Interpolation performed")
   pass
 
