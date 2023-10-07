@@ -38,14 +38,14 @@ def interpolation(pixels, width_output, height_output):
 def compute_lens_matrix(nl, R1, R2, dl):
     #A = np.array([[-0.00142039, 915.284], [-0.0012025, 70.8481]]) para lentes gruesas
     AR = np.array([[1/70, 690], [0, 70]])
-    AG = np.array([[0.0144265, 690], [0, 69.3168]])
-    AB = np.array([[0.0148487, 690], [0, 67.3462]])
+    AG = np.array([[101/7001, 690], [0, 7001/101]])
+    AB = np.array([[104/7004, 690], [0, 7004/104]])
     
-    A = np.array([[[1/70, 0.0144265, 0.0148487], [690, 690, 690]], [[0, 0, 0], [70, 69.3168, 67.3462]]])
+    A = np.array([[[1/70, 101/7001, 104/7004], [690, 690, 690]], [[0, 0, 0], [70, 7001/101, 7004/104]]])
     return A
 
 #Ray tracing function with spherical aberration
-def ray_tracing(width, height, rayo, so, n1, obj, res, nl, R1, R2, dl, pixels, width_output, height_output, si2, Mt):
+def ray_tracing(width, height, rayo, so, n1, obj, res, nl, R1, R2, dl, pixels, width_output, height_output, si2):
 
     # Iterate over each pixel of the image
     for i in range(width):
@@ -71,7 +71,7 @@ def ray_tracing(width, height, rayo, so, n1, obj, res, nl, R1, R2, dl, pixels, w
             A = compute_lens_matrix(nl, R1, R2, dl)
 
             # Define propagation matrices after and before the lens
-            P2 = np.array([[[1, 1, 1], [si/n1, si/n1, si/n1]],[[0, 0, 0], [1, 1, 1]]])
+            P2 = np.array([[[1, 1, 1], [si[0]/n1, si[1]/n1, si[2]/n1]],[[0, 0, 0], [1, 1, 1]]])
             P1 = np.array([[[1, 1, 1], [so/n1, so/n1, so/n1]],[[0, 0, 0], [1, 1, 1]]])
 
             if rayo == 0: #principal
@@ -89,7 +89,7 @@ def ray_tracing(width, height, rayo, so, n1, obj, res, nl, R1, R2, dl, pixels, w
             y_imagen = V_salida[0]
             if rayo == 0: #principal
                 #Mt = -y_imagen/y_objeto #atan correction
-                Mt = [-y_imagen[0]/y_objeto, -y_imagen[1]/y_objeto, -y_imagen[2]/y_objeto]
+                Mt = [y_imagen[0]/y_objeto, y_imagen[1]/y_objeto, y_imagen[2]/y_objeto]
             elif rayo == 1: #parallel
                 #Mt = y_imagen/y_objeto
                 Mt = [y_imagen[0]/y_objeto, y_imagen[1]/y_objeto, y_imagen[2]/y_objeto]

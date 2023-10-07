@@ -1,5 +1,6 @@
 import numpy as np
 import math
+import pandas as pd
 
 """y_objeto = 80
 n1 = 1
@@ -21,11 +22,25 @@ res3 = np.einsum('ikj,kj->ij', P2, res2)
 
 sol = np.einsum('ba, ced, fhg, ikj->ij', V_entrada, P1, A, P2)
 print(sol)"""
-so = 1324.817172
+"""so = 1324.817172
 f1 = 700
 f2 = -10
 si1 = (f1*so)/(so-f1)
 so2 = si1-(f1+f2)
 si2 = (f2*si1)/(si1-f2)
+
+print(si2)"""
+
+df = pd.read_json("lenses.json")
+so = 1320
+
+f1 = df.loc['objective2','mainSystem']['f']
+f2 = df.loc['eyespace2','mainSystem']['f']
+
+print(f1, f2)
+
+si1 = [(f1[0]*so)/(so-f1[0]), (f1[1]*so)/(so-f1[1]), (f1[2]*so)/(so-f1[2])]
+so2 = [-(si1[0]-(f1[0]+f2[0])), -(si1[1]-(f1[1]+f2[1])), -(si1[2]-(f1[2]+f2[2]))]
+si2 = [(f2[0]*so2[0])/(so2[0]-f2[0]), (f2[1]*so2[1])/(so2[1]-f2[1]), (f2[2]*so2[2])/(so2[2]-f2[2])]
 
 print(si2)

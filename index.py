@@ -24,20 +24,22 @@ res = 40/63
 
 so = 1320
 
-f1 = df.loc['objective','mainSystem']['f']
-f2 = df.loc['eyespace','mainSystem']['f']
+f1 = df.loc['objective2','mainSystem']['f']
+f2 = df.loc['eyespace2','mainSystem']['f']
 
-si1 = (f1*so)/(so-f1)
-so2 = -(si1-(f1+f2))
-si2 = (f2*so2)/(so2-f2)
+print(f1, f2)
+
+si1 = [(f1[0]*so)/(so-f1[0]), (f1[1]*so)/(so-f1[1]), (f1[2]*so)/(so-f1[2])]
+so2 = [-(si1[0]-(f1[0]+f2[0])), -(si1[1]-(f1[1]+f2[1])), -(si1[2]-(f1[2]+f2[2]))]
+si2 = [(f2[0]*so2[0])/(so2[0]-f2[0]), (f2[1]*so2[1])/(so2[1]-f2[1]), (f2[2]*so2[2])/(so2[2]-f2[2])]
 
 print(si2)
 
-Mt = (-si1/so)*(si2/so2)
+#Mt = (-si1/so)*(si2/so2)
 
 width, height = obj.size
-width_output = int(width*(abs(Mt)*res))
-height_output = int(height*(abs(Mt)*res))
+"""width_output = int(width*(abs(Mt)*res))
+height_output = int(height*(abs(Mt)*res))"""
 
 width_output = int(width)
 height_output = int(height)
@@ -50,10 +52,10 @@ pixels = image.load()
 interpolate = False
 
 #Compute the image with chief ray
-pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, nl, R1, R2, dl, pixels, width_output, height_output, si2, Mt)
+pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, nl, R1, R2, dl, pixels, width_output, height_output, si2)
 
 #Compute the cummulated image with parallel ray
-pixels = ray_tracing(width, height, PARALLEL_RAY, so, n1, obj, res, nl, R1, R2, dl, pixels, width_output, height_output, si2, Mt)
+pixels = ray_tracing(width, height, PARALLEL_RAY, so, n1, obj, res, nl, R1, R2, dl, pixels, width_output, height_output, si2)
 
 #Interpolating
 if (interpolate):
