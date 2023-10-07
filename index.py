@@ -28,8 +28,10 @@ f1 = df.loc['objective','mainSystem']['f']
 f2 = df.loc['eyespace','mainSystem']['f']
 
 si1 = (f1*so)/(so-f1)
-so2 = si1-(f1-f2)
-si2 = (f2*si1)/(si1-f2)
+so2 = -(si1-(f1+f2))
+si2 = (f2*so2)/(so2-f2)
+
+print(si2)
 
 Mt = (-si1/so)*(si2/so2)
 
@@ -48,7 +50,7 @@ pixels = image.load()
 interpolate = False
 
 #Compute the image with chief ray
-#pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, nl, R1, R2, dl, pixels, width_output, height_output, si2, Mt)
+pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, nl, R1, R2, dl, pixels, width_output, height_output, si2, Mt)
 
 #Compute the cummulated image with parallel ray
 pixels = ray_tracing(width, height, PARALLEL_RAY, so, n1, obj, res, nl, R1, R2, dl, pixels, width_output, height_output, si2, Mt)

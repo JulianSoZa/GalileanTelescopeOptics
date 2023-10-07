@@ -1,7 +1,7 @@
 import numpy as np
 import math
 
-y_objeto = 80
+"""y_objeto = 80
 n1 = 1
 alpha_entrada = 0.060532
 si = -9.93334
@@ -20,4 +20,12 @@ res2 = np.einsum('ikj,kj->ij', A, res)
 res3 = np.einsum('ikj,kj->ij', P2, res2)
 
 sol = np.einsum('ba, ced, fhg, ikj->ij', V_entrada, P1, A, P2)
-print(sol)
+print(sol)"""
+so = 1324.817172
+f1 = 700
+f2 = -10
+si1 = (f1*so)/(so-f1)
+so2 = si1-(f1+f2)
+si2 = (f2*si1)/(si1-f2)
+
+print(si2)

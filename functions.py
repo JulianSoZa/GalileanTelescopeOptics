@@ -75,7 +75,7 @@ def ray_tracing(width, height, rayo, so, n1, obj, res, nl, R1, R2, dl, pixels, w
             P1 = np.array([[[1, 1, 1], [so/n1, so/n1, so/n1]],[[0, 0, 0], [1, 1, 1]]])
 
             if rayo == 0: #principal
-                alpha_entrada = math.atan(y_objeto/so) #This ray enters towards the center of the lens
+                alpha_entrada = -math.atan(y_objeto/so) #This ray enters towards the center of the lens
             elif rayo == 1: #parallel
                 alpha_entrada = 0 #This ray enters parallel to the optical axis
             V_entrada = np.array([[y_objeto, y_objeto, y_objeto], [n1*alpha_entrada, n1*alpha_entrada, n1*alpha_entrada]])
