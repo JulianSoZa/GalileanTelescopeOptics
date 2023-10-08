@@ -1,0 +1,7 @@
+{
+"mars":{"url":"img/mars.jpg", "label":"Imagen Objeto"},
+"nuevaImagen":{"url":"img/nuevaImagen.png", "label":"Imagen Aberrada"},
+"nuevaImagenAberracionCorregida":{"url":"img/nuevaImagenAberracionCorregida.png", "label":"Imagen Sin Aberracion"},
+"nuevaImagenAberradaInterpolada":{"url":"img/nuevaImagenAberradaInterpolada.png", "label":"Imagen Aberrada Interpolada"},
+"nuevaImagenSinAberracionInterpolada":{"url":"img/nuevaImagenSinAberracionInterpolada.png", "label":"Imagen Sin Aberración Interpolada"}
+}

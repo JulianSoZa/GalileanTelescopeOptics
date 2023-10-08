@@ -1,6 +1,7 @@
 import numpy as np
 import math
 import pandas as pd
+import cv2
 
 """y_objeto = 80
 n1 = 1
@@ -31,7 +32,7 @@ si2 = (f2*si1)/(si1-f2)
 
 print(si2)"""
 
-df = pd.read_json("lenses.json")
+"""df = pd.read_json("lenses.json")
 so = 1320
 
 f1 = df.loc['objective2','mainSystem']['f']
@@ -43,4 +44,15 @@ si1 = [(f1[0]*so)/(so-f1[0]), (f1[1]*so)/(so-f1[1]), (f1[2]*so)/(so-f1[2])]
 so2 = [-(si1[0]-(f1[0]+f2[0])), -(si1[1]-(f1[1]+f2[1])), -(si1[2]-(f1[2]+f2[2]))]
 si2 = [(f2[0]*so2[0])/(so2[0]-f2[0]), (f2[1]*so2[1])/(so2[1]-f2[1]), (f2[2]*so2[2])/(so2[2]-f2[2])]
 
-print(si2)
+print(si2)"""
+
+images = pd.read_json("images.json")
+
+print(images[1])
+
+for j,i in enumerate(images):
+    print(i,j)
+    img = cv2.imread(images[i]['url'])
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) # se corrige para poder usar matplotlib
+    
+    

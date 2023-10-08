@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 from scipy.interpolate import griddata #for image interpolation
+import pandas as pd
 
 def interpolation(pixels, width_output, height_output):
   arry = np.zeros((width_output, height_output))
@@ -33,9 +34,10 @@ def interpolation(pixels, width_output, height_output):
   return pixels
 
 
-def interpolation_system():
+def interpolation_system(imgName, m):
+  images = pd.read_json("images.json")
   # imagen
-  img = cv2.imread("img/nuevaImagen.png") # matriz principal
+  img = cv2.imread(images[imgName[m-1]]['url']) # matriz principal
 
   img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) # se corrige para poder usar matplotlib
 
@@ -65,4 +67,4 @@ def interpolation_system():
 
   imgre = cv2.merge((pixelsB, pixelsG, pixelsR))
 
-  cv2.imwrite("img/nuevaImagenInterpolada.png", imgre)
+  cv2.imwrite(images[imgName[m+1]]['url'], imgre)
