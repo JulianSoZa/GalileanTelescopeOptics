@@ -4,7 +4,7 @@ import pandas as pd
 from modules.tracer import*
 
 def triplet_system():
-  df = pd.read_json("lenses.json") 
+  df = pd.read_json("data/lenses.json") 
 
   obj = Image.open("img/nuevaImagen.png", "r")
 

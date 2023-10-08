@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 def figures():
-    images = pd.read_json("images.json")
+    images = pd.read_json("data/images.json")
     
     fig4 = plt.figure()
     

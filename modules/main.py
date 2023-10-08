@@ -4,7 +4,7 @@ import numpy as np
 from modules.tracer import*
 
 def main_system():
-    df = pd.read_json("lenses.json") 
+    df = pd.read_json("data/lenses.json") 
     obj = Image.open("img/mars.jpg", "r")
 
     n1 = 1

@@ -35,7 +35,7 @@ def interpolation(pixels, width_output, height_output):
 
 
 def interpolation_system(imgName, m):
-  images = pd.read_json("images.json")
+  images = pd.read_json("data/images.json")
   # imagen
   img = cv2.imread(images[imgName[m-1]]['url']) # matriz principal
 

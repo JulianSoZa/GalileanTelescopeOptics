@@ -32,7 +32,7 @@ si2 = (f2*si1)/(si1-f2)
 
 print(si2)"""
 
-"""df = pd.read_json("lenses.json")
+"""df = pd.read_json("data/lenses.json")
 so = 1320
 
 f1 = df.loc['objective2','mainSystem']['f']
@@ -46,7 +46,7 @@ si2 = [(f2[0]*so2[0])/(so2[0]-f2[0]), (f2[1]*so2[1])/(so2[1]-f2[1]), (f2[2]*so2[
 
 print(si2)"""
 
-images = pd.read_json("images.json")
+images = pd.read_json("data/images.json")
 
 print(images[1])
 
