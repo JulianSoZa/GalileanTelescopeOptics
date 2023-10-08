@@ -18,12 +18,12 @@ def main_system():
 
     so = 1320
 
-    f1 = df.loc['objective2','mainSystem']['f']
-    f2 = df.loc['eyespace2','mainSystem']['f']
+    f1 = np.array(df.loc['objective2','mainSystem']['f'])
+    f2 = np.array(df.loc['eyespace2','mainSystem']['f'])
 
-    si1 = [(f1[0]*so)/(so-f1[0]), (f1[1]*so)/(so-f1[1]), (f1[2]*so)/(so-f1[2])]
-    so2 = [-(si1[0]-(f1[0]+f2[0])), -(si1[1]-(f1[1]+f2[1])), -(si1[2]-(f1[2]+f2[2]))]
-    si2 = [(f2[0]*so2[0])/(so2[0]-f2[0]), (f2[1]*so2[1])/(so2[1]-f2[1]), (f2[2]*so2[2])/(so2[2]-f2[2])]
+    si1 = (f1*so)/(so-f1)
+    so2 = -(si1-(f1+f2))
+    si2 = (f2*so2)/(so2-f2)
 
     print(si2)
 
