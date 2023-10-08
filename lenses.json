@@ -6,9 +6,9 @@
     "eyespace2":{"f":[-10, -10.1, -10.4], "R":12, "d":10}
 },
 "triplet":{
-    "convergentLens":{"f":700, "R":30, "d":11},
-    "divergentLens":{"f":-10, "R":12, "d":10},
-    "planarConvergentLens":{"f":-10, "R":12, "d":10}
+    "convergentLens":{"f":[142, 142.1, 142.4], "R":140.14, "d":11},
+    "divergentLens":{"f":[-96, -96.1, -96.4], "R":137.02, "d":13},
+    "planarConvergentLens":{"f":[274.05, 274.33, 275.17], "R":138.5, "d":11}
 }
 }
 
