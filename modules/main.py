@@ -1,7 +1,7 @@
 from PIL import Image #Image file handling
 import pandas as pd
 import numpy as np
-from packages.tracer import*
+from modules.tracer import*
 
 def main_system():
     df = pd.read_json("lenses.json") 

@@ -1,7 +1,7 @@
 import numpy as np
 from PIL import Image #Image file handling
 import pandas as pd
-from packages.tracer import*
+from modules.tracer import*
 
 def triplet_system():
   df = pd.read_json("lenses.json") 

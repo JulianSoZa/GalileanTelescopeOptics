@@ -1,4 +1,4 @@
-from packages import main, triplet, interpolation
+from modules import main, triplet, interpolation
 
 print('Escoja el sistema de procesamiento: \n 1. Sistema Principal \n 2. Sistema Triplete \n 3. Interpolación')
 n = input()
