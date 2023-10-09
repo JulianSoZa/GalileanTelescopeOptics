@@ -87,3 +87,5 @@ f = 1/((1/f1)+(1/f2)+(1/f3))
 si = (f*so)/(so-f)
 
 print(si)
+
+print(int([1.5, 1.2]))

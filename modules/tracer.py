@@ -72,20 +72,16 @@ def ray_tracing(width, height, rayo, so, n1, obj, res, pixels, width_output, hei
 
             #Transversal magnification
             y_imagen = V_salida[0]
-            if rayo == 0: #principal
-                #Mt = -y_imagen/y_objeto #atan correction
-                Mt = [y_imagen[0]/y_objeto, y_imagen[1]/y_objeto, y_imagen[2]/y_objeto]
-            elif rayo == 1: #parallel
-                #Mt = y_imagen/y_objeto
-                Mt = [y_imagen[0]/y_objeto, y_imagen[1]/y_objeto, y_imagen[2]/y_objeto]
+
+            Mt = y_imagen/y_objeto
 
             #Conversion from image coordinates to lens coordinates
             if(m == '0'):
-                x_prime = [x*(126/1.6)*Mt[0], x*(126/1.6)*Mt[1], x*(126/1.6)*Mt[2]]
-                y_prime = [y*(126/1.6)*Mt[0], y*(126/1.6)*Mt[1], y*(126/1.6)*Mt[2]]
+                x_prime = x*(126/1.6)*Mt
+                y_prime = y*(126/1.6)*Mt
             elif(m == '1'):
-                x_prime = [x*Mt[0], x*Mt[1], x*Mt[2]]
-                y_prime = [y*Mt[0], y*Mt[1], y*Mt[2]]
+                x_prime = x*Mt
+                y_prime = y*Mt
             
             pos_x_prime = [int(x_prime[0] + width_output/2), int(x_prime[1] + width_output/2), int(x_prime[2] + width_output/2)]
             pos_y_prime = [int(y_prime[0] + height_output/2), int(y_prime[1] + height_output/2), int(y_prime[2] + height_output/2)]
@@ -110,10 +106,7 @@ def ray_tracing(width, height, rayo, so, n1, obj, res, pixels, width_output, hei
                 pixels[pos_x_prime[2], pos_y_prime[2]] = (pixel[0], pixel[1], pixel[2])
                 next
             elif rayo == 1: #parallel
-                #new_gray = [(int(pixel[0]) + pixels[pos_x_prime[0], pos_y_prime[0]][0])/2, (int(pixel[1]) + pixels[pos_x_prime[1], pos_y_prime[1]][0])/2, (int(pixel[2]) + pixels[pos_x_prime[2], pos_y_prime[2]][0])/2]
-                new_gray = [int(pixel[0]), int(pixel[1]), int(pixel[2])]
-                pix_fin = ( int(new_gray[0]), int(new_gray[1]), int(new_gray[2]) )
-                pixels[pos_x_prime[0], pos_y_prime[0]] = (pix_fin[0], pixels[pos_x_prime[0], pos_y_prime[0]][1],pixels[pos_x_prime[0], pos_y_prime[0]][2])
-                pixels[pos_x_prime[1], pos_y_prime[1]] = (pixels[pos_x_prime[1], pos_y_prime[1]][0], pix_fin[1], pixels[pos_x_prime[1], pos_y_prime[1]][2])
-                pixels[pos_x_prime[2], pos_y_prime[2]] = (pixels[pos_x_prime[2], pos_y_prime[2]][0],pixels[pos_x_prime[2], pos_y_prime[2]][1], pix_fin[2])
+                pixels[pos_x_prime[0], pos_y_prime[0]] = (pixel[0], pixels[pos_x_prime[0], pos_y_prime[0]][1], pixels[pos_x_prime[0], pos_y_prime[0]][2])
+                pixels[pos_x_prime[1], pos_y_prime[1]] = (pixels[pos_x_prime[1], pos_y_prime[1]][0], pixel[1], pixels[pos_x_prime[1], pos_y_prime[1]][2])
+                pixels[pos_x_prime[2], pos_y_prime[2]] = (pixels[pos_x_prime[2], pos_y_prime[2]][0], pixels[pos_x_prime[2], pos_y_prime[2]][1], pixel[2])
     return pixels
