@@ -32,7 +32,7 @@ def triplet_system():
   d2 = df.loc['divergentLens','triplet']['d']
   d3 = df.loc['planarConvergentLens','triplet']['d']
 
-  so = 18 + (d1+d2+d3)/2 - si2
+  so = 18*2 + (d1+d2+d3)/2 - si2
 
   f1 = np.array(df.loc['convergentLens','triplet']['f'])
   f2 = np.array(df.loc['divergentLens','triplet']['f'])
@@ -54,9 +54,9 @@ def triplet_system():
   pixels = image.load()
 
   #Compute the image with chief ray
-  pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m)
+  pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, f1, f2, f3)
 
   #Compute the cummulated image with parallel ray
-  pixels = ray_tracing(width, height, PARALLEL_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m)
+  pixels = ray_tracing(width, height, PARALLEL_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, f1, f2, f3)
 
   image.save('img/nuevaImagenAberracionCorregida.png', format='PNG')

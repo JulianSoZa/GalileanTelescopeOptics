@@ -20,6 +20,7 @@ def main_system():
 
     f1 = np.array(df.loc['objective2','mainSystem']['f'])
     f2 = np.array(df.loc['eyespace2','mainSystem']['f'])
+    f3 = 0
 
     si1 = (f1*so)/(so-f1)
     so2 = -(si1-(f1+f2))
@@ -37,9 +38,9 @@ def main_system():
     pixels = image.load()
 
     #Compute the image with chief ray
-    pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, pixels, width_output, height_output, si2, m)
+    pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, pixels, width_output, height_output, si2, m, f1, f2, f3)
 
     #Compute the cummulated image with parallel ray
-    pixels = ray_tracing(width, height, PARALLEL_RAY, so, n1, obj, res, pixels, width_output, height_output, si2, m)
+    pixels = ray_tracing(width, height, PARALLEL_RAY, so, n1, obj, res, pixels, width_output, height_output, si2, m, f1, f2, f3)
 
     image.save('img/nuevaImagen.png', format='PNG')

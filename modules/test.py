@@ -57,7 +57,7 @@ for j,i in enumerate(images):
 
 df = pd.read_json("data/lenses.json") 
 
-so = 1320
+"""so = 1320
 
 f1 = np.array(df.loc['objective2','mainSystem']['f'])
 f2 = np.array(df.loc['eyespace2','mainSystem']['f'])
@@ -88,4 +88,20 @@ si = (f*so)/(so-f)
 
 print(si)
 
-print(int([1.5, 1.2]))
+print(int([1.5, 1.2]))"""
+
+"""f1 = np.array(df.loc['objective2','mainSystem']['f'])
+f2 = np.array(df.loc['eyespace2','mainSystem']['f'])
+
+d = f1 + f2
+A = np.array([[-f2/f1, d], [[0, 0, 0], -f1/f2]])
+
+print(A)"""
+
+f1 = np.array(df.loc['convergentLens','triplet']['f'])
+f2 = np.array(df.loc['divergentLens','triplet']['f'])
+f3 = np.array(df.loc['planarConvergentLens','triplet']['f'])
+
+T = np.array([[[1, 1, 1], [0, 0, 0]], [-(f1*f2 + f1*f3 + f2*f3)/(f1*f2*f3), [1, 1, 1]]])
+
+print(T)

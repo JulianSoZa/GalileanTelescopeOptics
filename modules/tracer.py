@@ -1,21 +1,33 @@
 import numpy as np
 import math
+import pandas as pd
 
-def compute_lens_matrix():
+def compute_lens_matrix(f1, f2):
     #A = np.array([[-0.00142039, 915.284], [-0.0012025, 70.8481]]) para lentes gruesas
     AR = np.array([[1/70, 690], [0, 70]])
     AG = np.array([[101/7001, 690], [0, 7001/101]])
     AB = np.array([[104/7004, 690], [0, 7004/104]])
     
-    A = np.array([[[1/70, 101/7001, 104/7004], [690, 690, 690]], [[0, 0, 0], [70, 7001/101, 7004/104]]])
+    #A = np.array([[[1/70, 101/7001, 104/7004], [690, 690, 690]], [[0, 0, 0], [70, 7001/101, 7004/104]]])
+    
+    
+    #------------------- Sistema de lentes delgadas -------------
+    
+    d = f1 + f2
+    A = np.array([[-f2/f1, d], [[0, 0, 0], -f1/f2]])
     
     return A
 
-def triplet():
-    T = np.array([[[0.95193, 0.951955, 0.952031], [22.6353, 22.635,  22.634]], [[-0.000748969, -0.000749235, -0.000750021], [1.03269, 1.03265, 1.03255]]])
+def triplet(f1, f2, f3):
+    #T = np.array([[[0.95193, 0.951955, 0.952031], [22.6353, 22.635,  22.634]], [[-0.000748969, -0.000749235, -0.000750021], [1.03269, 1.03265, 1.03255]]])
+    
+    #------------------- Sistema de lentes delgadas -------------
+    
+    T = np.array([[[1, 1, 1], [0, 0, 0]], [-(f1*f2 + f1*f3 + f2*f3)/(f1*f2*f3), [1, 1, 1]]])
+    
     return T
 
-def ray_tracing(width, height, rayo, so, n1, obj, res, pixels, width_output, height_output, si2, m):
+def ray_tracing(width, height, rayo, so, n1, obj, res, pixels, width_output, height_output, si2, m, f1, f2, f3):
 
     # Iterate over each pixel of the image
     for i in range(width):
@@ -38,11 +50,10 @@ def ray_tracing(width, height, rayo, so, n1, obj, res, pixels, width_output, hei
             si = si2
 
             # Compute lens matrix using parameters nl, R1, R2, and dl
-            A = compute_lens_matrix()
-            T = triplet()
 
             #Output ray vector calculation
             if(m == '0'):
+                A = compute_lens_matrix(f1, f2)
                 # Define propagation matrices after and before the lens
                 P2 = np.array([[[1, 1, 1], [si[0]/n1, si[1]/n1, si[2]/n1]],[[0, 0, 0], [1, 1, 1]]])
                 P1 = np.array([[[1, 1, 1], [so/n1, so/n1, so/n1]],[[0, 0, 0], [1, 1, 1]]])
@@ -57,6 +68,7 @@ def ray_tracing(width, height, rayo, so, n1, obj, res, pixels, width_output, hei
                 res2 = np.einsum('ikj,kj->ij', A, res1)
                 V_salida = np.einsum('ikj,kj->ij', P2, res2)
             elif(m == '1'):
+                T = triplet(f1, f2, f3)
                 P2 = np.array([[[1, 1, 1], [si[0]/n1, si[1]/n1, si[2]/n1]],[[0, 0, 0], [1, 1, 1]]])
                 P1 = np.array([[[1, 1, 1], [so[0]/n1, so[1]/n1, so[2]/n1]],[[0, 0, 0], [1, 1, 1]]])
 
