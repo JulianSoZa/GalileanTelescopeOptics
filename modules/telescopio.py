@@ -5,7 +5,10 @@ from modules.tracer import *
 
 def main_system(m):
     df = pd.read_json("data/lenses.json") 
-    obj = Image.open("img/mars.jpg", "r")
+    if m == '0':
+        obj = Image.open("img/mars.jpg", "r")
+    else:
+        obj = Image.open("img/nuevaImagen.png", "r")
 
     n1 = 1
     
