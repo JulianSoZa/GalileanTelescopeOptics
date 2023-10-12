@@ -57,6 +57,6 @@ def triplet_system():
   pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, f1, f2, f3)
 
   #Compute the cummulated image with parallel ray
-  pixels = ray_tracing(width, height, PARALLEL_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, f1, f2, f3)
+  #pixels = ray_tracing(width, height, PARALLEL_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, f1, f2, f3)
 
   image.save('img/nuevaImagenAberracionCorregida.png', format='PNG')
