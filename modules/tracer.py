@@ -113,9 +113,9 @@ def ray_tracing(width, height, rayo, so, n1, obj, res, pixels, width_output, hei
                 continue
 
             if rayo == 0: #principal
-                pixels[pos_x_prime[0], pos_y_prime[0]] = (pixel[0], pixel[1], pixel[2])
-                pixels[pos_x_prime[1], pos_y_prime[1]] = (pixel[0], pixel[1], pixel[2])
-                pixels[pos_x_prime[2], pos_y_prime[2]] = (pixel[0], pixel[1], pixel[2])
+                pixels[pos_x_prime[0], pos_y_prime[0]] = (pixel[0], pixels[pos_x_prime[0], pos_y_prime[0]][1], pixels[pos_x_prime[0], pos_y_prime[0]][2])
+                pixels[pos_x_prime[1], pos_y_prime[1]] = (pixels[pos_x_prime[1], pos_y_prime[1]][0], pixel[1], pixels[pos_x_prime[1], pos_y_prime[1]][2])
+                pixels[pos_x_prime[2], pos_y_prime[2]] = (pixels[pos_x_prime[2], pos_y_prime[2]][0], pixels[pos_x_prime[2], pos_y_prime[2]][1], pixel[2])
                 next
             elif rayo == 1: #parallel
                 pixels[pos_x_prime[0], pos_y_prime[0]] = (pixel[0], pixels[pos_x_prime[0], pos_y_prime[0]][1], pixels[pos_x_prime[0], pos_y_prime[0]][2])

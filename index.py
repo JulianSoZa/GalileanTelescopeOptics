@@ -1,11 +1,11 @@
-from modules import main, triplet, interpolation, analysisResults
+from modules import main, triplet, interpolation, analysisResults, telescopio
 import pandas as pd
 
 
 d=True
 t=True
 while d==True:
-    print('Escoja el sistema de procesamiento: \n 1. Sistema Principal \n 2. Sistema Triplete \n 3. Interpolación \n 4. Gráficas')
+    print('Escoja el sistema de procesamiento: \n 1. Sistema Principal \n 2. Sistema Triplete \n 3. Interpolación \n 4. Gráficas \n 5. Sistema aberrado e interpolado \n 6. Sistema sin aberración e interpolado \n 7. Analisis de resultados')
     n=input()
     if(n == '1'):
         main.main_system()
@@ -21,6 +21,24 @@ while d==True:
 
     elif(n == '4'):
         analysisResults.figures()
+    elif(n == '5'):
+        telescopio.main_system('0')
+        imgName = ['nuevaImagen', 'nuevaImagenAberracionCorregida', 'nuevaImagenAberradaInterpolada', 'nuevaImagenSinAberracionInterpolada']
+        interpolation.interpolation_system(imgName, 1)
+        
+    elif(n == '6'):
+        telescopio.main_system('1')
+        imgName = ['nuevaImagen', 'nuevaImagenAberracionCorregida', 'nuevaImagenAberradaInterpolada', 'nuevaImagenSinAberracionInterpolada']
+        interpolation.interpolation_system(imgName, 2)
+    elif(n == '7'):
+        telescopio.main_system('0')
+        imgName = ['nuevaImagen', 'nuevaImagenAberracionCorregida', 'nuevaImagenAberradaInterpolada', 'nuevaImagenSinAberracionInterpolada']
+        interpolation.interpolation_system(imgName, 1)
+        telescopio.main_system('1')
+        imgName = ['nuevaImagen', 'nuevaImagenAberracionCorregida', 'nuevaImagenAberradaInterpolada', 'nuevaImagenSinAberracionInterpolada']
+        interpolation.interpolation_system(imgName, 2)
+        analysisResults.figures()
+
     else:
         print('Por favor ingrese un valor valido')
         t=False
