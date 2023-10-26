@@ -42,6 +42,7 @@ while d==True:
     else:
         print('Por favor ingrese un valor valido')
         t=False
+        #holi
         pass
     while t==True:
         print('¿Desea continuar? \n y.  n.')
