@@ -98,10 +98,21 @@ A = np.array([[-f2/f1, d], [[0, 0, 0], -f1/f2]])
 
 print(A)"""
 
-f1 = np.array(df.loc['convergentLens','triplet']['f'])
+"""f1 = np.array(df.loc['convergentLens','triplet']['f'])
 f2 = np.array(df.loc['divergentLens','triplet']['f'])
 f3 = np.array(df.loc['planarConvergentLens','triplet']['f'])
 
 T = np.array([[[1, 1, 1], [0, 0, 0]], [-(f1*f2 + f1*f3 + f2*f3)/(f1*f2*f3), [1, 1, 1]]])
-
-print(T)
+"""
+so = df.loc['mars','object']['so']
+f1 = np.array(df.loc['objective2','mainSystem']['f'])
+f2 = np.array(df.loc['eyespace2','mainSystem']['f'])
+print(f2)
+f3 = 0
+si1 = (f1*so)/(so-f1)
+print(si1)
+so2 = -(si1-(f1+f2))
+print(so2)
+si2 = (f2*so2)/(-so2-f2)
+si = si2
+print(si)
