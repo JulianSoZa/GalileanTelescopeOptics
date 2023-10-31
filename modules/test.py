@@ -1,8 +1,8 @@
 import numpy as np
 import math
 import pandas as pd
+from PIL import Image #Image file handling
 import cv2
-import pandas as pd
 
 """y_objeto = 80
 n1 = 1
@@ -102,9 +102,9 @@ print(A)"""
 f2 = np.array(df.loc['divergentLens','triplet']['f'])
 f3 = np.array(df.loc['planarConvergentLens','triplet']['f'])
 
-T = np.array([[[1, 1, 1], [0, 0, 0]], [-(f1*f2 + f1*f3 + f2*f3)/(f1*f2*f3), [1, 1, 1]]])
+A = np.array([[[1, 1, 1], [0, 0, 0]], [-(f1*f2 + f1*f3 + f2*f3)/(f1*f2*f3), [1, 1, 1]]])
 """
-so = df.loc['mars','object']['so']
+"""so = df.loc['mars','object']['so']
 f1 = np.array(df.loc['objective2','mainSystem']['f'])
 f2 = np.array(df.loc['eyespace2','mainSystem']['f'])
 print(f2)
@@ -114,5 +114,80 @@ print(si1)
 so2 = -(si1-(f1+f2))
 print(so2)
 si2 = (f2*so2)/(-so2-f2)
-si = si2
-print(si)
+si = si2"""
+"""dE = np.float64(np.array(df.loc['planarConvergentLens','triplet']['d']))
+nE = np.float64(np.array(df.loc['planarConvergentLens','triplet']['n']))
+nD = np.float64(np.array(df.loc['divergentLens','triplet']['n']))
+rD = np.float64(np.array(df.loc['divergentLens','triplet']['R']))
+dD = np.float64(np.array(df.loc['divergentLens','triplet']['d']))
+nC = np.float64(np.array(df.loc['convergentLens','triplet']['n']))
+dC = np.float64(np.array(df.loc['convergentLens','triplet']['d']))
+rC = np.float64(np.array(df.loc['convergentLens','triplet']['R']))"""
+
+"""R1 = np.array([[[1, 1, 1], [0, 0, 0]] , [[0, 0, 0], [1, 1, 1]]])
+T12 = np.array([[[1, 1, 1], dE/nE] , [[0, 0, 0], [1, 1, 1]]])
+R2 = np.array([[[1, 1, 1], [0, 0, 0]] , [(nD-nE)/rD, [1, 1, 1]]])
+T23 = np.array([[[1, 1, 1], dD/nD] , [[0, 0, 0], [1, 1, 1]]])
+R3 = np.array([[[1, 1, 1], [0, 0, 0]] , [(nC-nD)/(-rD), [1, 1, 1]]])
+T34 = np.array([[[1, 1, 1], dC/nC] , [[0, 0, 0], [1, 1, 1]]])
+R4 = np.array([[[1, 1, 1], [0, 0, 0]] , [(1-nC)/(rC), [1, 1, 1]]])"""
+
+#res1 = np.einsum('ikj,ilj->ikjl', T12,R2)
+"""res3 = np.einsum('ikj,ilj->ilj', res2, T23)
+res4 = np.einsum('ikj,ilj->ilj', res3, R3)
+res5 = np.einsum('ikj,ilj->ilj', res4, T34)
+A = np.einsum('ikj,ilj->ilj', res5, R4)"""
+
+"""A = []
+for i in range(3):
+    R1 = np.array([[1, 0] , [0, 1]])
+    T12 = np.array([[1, dE/nE[i]] , [0, 1]])
+    R2 = np.array([[1, 0] , [(nD[i]-nE[i])/rD, 1]])
+    T23 = np.array([[1, dD/nD[i]] , [0, 1]])
+    R3 = np.array([[1, 0] , [(nC[i]-nD[i])/(-rD), 1]])
+    T34 = np.array([[1, dC/nC[i]] , [0, 1]])
+    R4 = np.array([[1, 0] , [(1-nC[i])/(rC), 1]])
+
+    A.append(R1@T12@R2@T23@R3@T34@R4)
+    
+AR, AG, AB = A[0], A[1], A[2]
+
+A = np.array([[[AR[0][0], AG[0][0], AB[0][0]], [AR[0][1], AG[0][1], AB[0][1]]] , [[AR[1][0], AG[1][0], AB[1][0]], [AR[1][1], AG[1][1], AB[1][1]]]])
+"""
+
+"""nA = np.array(df.loc['objective2','mainSystem']['n'])
+rA = np.array(df.loc['objective2','mainSystem']['R'])
+dA = np.array(df.loc['objective2','mainSystem']['d'])
+nB = np.array(df.loc['eyespace2','mainSystem']['n'])
+rB = np.array(df.loc['eyespace2','mainSystem']['R'])
+dB = np.array(df.loc['eyespace2','mainSystem']['d'])
+
+fA = 1/((nA-1)*((1/rA)-(1/(-rA))+(((nA-1)*dA)/(nA*rA*(-rA)))))
+fB = 1/((nB-1)*((1/(-rB))-(1/(rB))+(((nB-1)*dB)/(nB*rB*(-rB)))))
+print(fB)
+
+A = []
+for i in range(3):
+    R5 = np.array([[1, 0] , [(nB[i]-1)/(rB), 1]])
+    T56 = np.array([[1, dB/nB[i]] , [0, 1]])
+    R6 = np.array([[1, 0] , [(1-nB[i])/(-rB), 1]])
+    T67 = np.array([[1, fA[i] + fB[i]] , [0, 1]])
+    R7 = np.array([[1, 0] , [(nA[i]-1)/(-rA), 1]])
+    T78 = np.array([[1, dA/nA[i]] , [0, 1]])
+    R8 = np.array([[1, 0] , [(1-nA[i])/(rA), 1]])
+    
+    A.append(R5@T56@R6@T67@R7@T78@R8)
+    
+AR, AG, AB = A[0], A[1], A[2]
+
+A = np.array([[[AR[0][0], AG[0][0], AB[0][0]], [AR[0][1], AG[0][1], AB[0][1]]] , [[AR[1][0], AG[1][0], AB[1][0]], [AR[1][1], AG[1][1], AB[1][1]]]])
+
+print(A)
+"""
+
+df = pd.read_json("data/lenses.json") 
+obj = Image.open("img/mars.jpg", "r")
+
+width, height = obj.size
+    
+print(width)

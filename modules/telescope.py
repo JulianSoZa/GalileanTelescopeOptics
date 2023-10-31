@@ -3,11 +3,11 @@ import pandas as pd
 import numpy as np
 from modules.tracer import *
 
-def telescope_system(m):
+def telescope_system(m, l, url):
     df = pd.read_json("data/lenses.json") 
     
     if m == '0':
-        obj = Image.open("img/mars.jpg", "r")
+        obj = Image.open(url, "r")
     elif m == '1':
         obj = Image.open("img/nuevaImagen.png", "r")
         
@@ -30,6 +30,8 @@ def telescope_system(m):
     si1 = (f1*so)/(so-f1)
     so2 = -(si1-(f1+f2))
     si2 = (f2*so2)/(so2-f2)
+    
+    print("si2: ", si2)
     
     if m == '0':
         
@@ -63,12 +65,12 @@ def telescope_system(m):
 
     if m == '0':
         #Compute the cummulated image with parallel ray
-        pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, f1, f2, f3)
-        pixels = ray_tracing(width, height, PARALLEL_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, f1, f2, f3)    
+        pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, l)
+        pixels = ray_tracing(width, height, PARALLEL_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, l)    
         image.save('img/nuevaImagen.png', format='PNG')
         
     elif m == '1':
         #Compute the cummulated image with parallel ray
-        pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, f1, f2, f3)
-        pixels = ray_tracing(width, height, PARALLEL_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, f1, f2, f3)    
+        pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, l)
+        pixels = ray_tracing(width, height, PARALLEL_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, l)    
         image.save('img/nuevaImagenAberracionCorregida.png', format='PNG')

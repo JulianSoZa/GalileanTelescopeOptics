@@ -52,17 +52,17 @@ def interpolation_system(imgName, m):
 
   if (interpolate):
     pixelsR = interpolation(pixelsR, width_output, height_output)
-    print ("Interpolation performed")
+    print ("Red Interpolation performed")
     pass
 
   if (interpolate):
     pixelsG = interpolation(pixelsG, width_output, height_output)
-    print ("Interpolation performed")
+    print ("Green Interpolation performed")
     pass
 
   if (interpolate):
     pixelsB = interpolation(pixelsB, width_output, height_output)
-    print ("Interpolation performed")
+    print ("Blue Interpolation performed")
     pass
 
   imgre = cv2.merge((pixelsB, pixelsG, pixelsR))
