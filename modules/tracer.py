@@ -7,8 +7,8 @@ def compute_lens_matrix(l):
     
     if l == 'd':
         #------------------- Sistema de lentes delgadas -------------
-        f1 = np.array(df.loc['objective2','mainSystem']['f'])
-        f2 = np.array(df.loc['eyespace2','mainSystem']['f'])
+        f1 = np.array(df.loc['objective','mainSystem']['f'])
+        f2 = np.array(df.loc['eyespace','mainSystem']['f'])
         
         d = f1 + f2
         A = np.array([[-f2/f1, d], [[0, 0, 0], -f1/f2]])
@@ -16,12 +16,12 @@ def compute_lens_matrix(l):
     elif l == 'g':
         # ------------------ Sistema de lentes gruesas --------------
         
-        nA = np.array(df.loc['objective2','mainSystem']['n'])
-        rA = np.array(df.loc['objective2','mainSystem']['R'])
-        dA = np.array(df.loc['objective2','mainSystem']['d'])
-        nB = np.array(df.loc['eyespace2','mainSystem']['n'])
-        rB = np.array(df.loc['eyespace2','mainSystem']['R'])
-        dB = np.array(df.loc['eyespace2','mainSystem']['d'])
+        nA = np.array(df.loc['objective','mainSystem']['n'])
+        rA = np.array(df.loc['objective','mainSystem']['R'])
+        dA = np.array(df.loc['objective','mainSystem']['d'])
+        nB = np.array(df.loc['eyespace','mainSystem']['n'])
+        rB = np.array(df.loc['eyespace','mainSystem']['R'])
+        dB = np.array(df.loc['eyespace','mainSystem']['d'])
         
         fA = 1/((nA-1)*((1/rA)-(1/(-rA))+(((nA-1)*dA)/(nA*rA*(-rA)))))
         fB = 1/((nB-1)*((1/(-rB))-(1/(rB))+(((nB-1)*dB)/(nB*rB*(-rB)))))
@@ -147,8 +147,8 @@ def ray_tracing(width, height, rayo, so, n1, obj, res, pixels, width_output, hei
 
             #Conversion from image coordinates to lens coordinates
             if(m == '0'):
-                x_prime = x*(127.5/1.6)*Mt
-                y_prime = y*(127.5/1.6)*Mt
+                x_prime = x*(126/1.6)*Mt
+                y_prime = y*(126/1.6)*Mt
                 
             elif(m == '1'):
                 x_prime = x*Mt

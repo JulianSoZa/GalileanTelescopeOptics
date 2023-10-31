@@ -43,8 +43,7 @@ def interpolation_system(imgName, m):
 
   R,G,B = cv2.split(img) # se extraen los canales
 
-  width_output = 252
-  height_output = 252
+  width_output, height_output, _ = img.shape
 
   pixelsR, pixelsG, pixelsB = R, G, B
   

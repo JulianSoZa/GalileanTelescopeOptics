@@ -185,9 +185,18 @@ A = np.array([[[AR[0][0], AG[0][0], AB[0][0]], [AR[0][1], AG[0][1], AB[0][1]]] ,
 print(A)
 """
 
-df = pd.read_json("data/lenses.json") 
-obj = Image.open("img/mars.jpg", "r")
+dE = np.array(df.loc['planarConvergentLens','triplet']['d'])
+nE = np.array(df.loc['planarConvergentLens','triplet']['n'])
+rE = np.array(df.loc['planarConvergentLens','triplet']['R'])
+nD = np.array(df.loc['divergentLens','triplet']['n'])
+rD = np.array(df.loc['divergentLens','triplet']['R'])
+dD = np.array(df.loc['divergentLens','triplet']['d'])
+nC = np.array(df.loc['convergentLens','triplet']['n'])
+dC = np.array(df.loc['convergentLens','triplet']['d'])
+rC = np.array(df.loc['convergentLens','triplet']['R'])
 
-width, height = obj.size
-    
-print(width)
+f3 = 1/((nE-1)*(1/rE))
+f2 = 1/((nD-1)*((1/(-rD))-(1/(rD))+(((nD-1)*dD)/(nD*rD*(-rD)))))
+f1 = 1/((nC-1)*((1/rC)-(1/(-rC))+(((nC-1)*dC)/(nC*rC*(-rC)))))
+
+print(f1, f2, f3)
