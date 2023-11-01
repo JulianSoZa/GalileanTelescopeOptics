@@ -9,7 +9,7 @@ def telescope_system(m, l, url):
     if m == '0':
         obj = Image.open(url, "r")
     elif m == '1':
-        obj = Image.open("img/nuevaImagen.png", "r")
+        obj = Image.open("img/mars.jpg", "r")
         
     width, height = obj.size
 
@@ -24,35 +24,55 @@ def telescope_system(m, l, url):
     
     res = dio/height
     
-    if l == 'd':
-        f1 = np.array(df.loc['objective','mainSystem']['f'])
-        f2 = np.array(df.loc['eyespace','mainSystem']['f'])
-        
-    elif l == 'g':
-        nA = np.array(df.loc['objective','mainSystem']['n'])
-        rA = np.array(df.loc['objective','mainSystem']['R'])
-        dA = np.array(df.loc['objective','mainSystem']['d'])
-        nB = np.array(df.loc['eyespace','mainSystem']['n'])
-        rB = np.array(df.loc['eyespace','mainSystem']['R'])
-        dB = np.array(df.loc['eyespace','mainSystem']['d'])
-        
-        f1 = 1/((nA-1)*((1/rA)-(1/(-rA))+(((nA-1)*dA)/(nA*rA*(-rA)))))
-        f2 = 1/((nB-1)*((1/(-rB))-(1/(rB))+(((nB-1)*dB)/(nB*rB*(-rB)))))
-    
-    si1 = (f1*so)/(so-f1)
-    so2 = -(si1-(f1+f2))
-    si2 = (f2*so2)/(so2-f2)
-    
-    print("si2: ", si2)
-    
     if m == '0':
+        if l == 'd':
+            f1 = np.array(df.loc['objective','mainSystem']['f'])
+            f2 = np.array(df.loc['eyespace','mainSystem']['f'])
+        
+        elif l == 'g':
+            nA = np.array(df.loc['objective','mainSystem']['n'])
+            rA = np.array(df.loc['objective','mainSystem']['R'])
+            dA = np.array(df.loc['objective','mainSystem']['d'])
+            nB = np.array(df.loc['eyespace','mainSystem']['n'])
+            rB = np.array(df.loc['eyespace','mainSystem']['R'])
+            dB = np.array(df.loc['eyespace','mainSystem']['d'])
+            
+            f1 = 1/((nA-1)*((1/rA)-(1/(-rA))+(((nA-1)*dA)/(nA*rA*(-rA)))))
+            f2 = 1/((nB-1)*((1/(-rB))-(1/(rB))+(((nB-1)*dB)/(nB*rB*(-rB)))))
+        
+        si1 = (f1*so)/(so-f1)
+        so2 = -(si1-(f1+f2))
+        si2 = (f2*so2)/(so2-f2)
+    
+        print("si2: ", si2)
+        
         si = si2
         width_output = int(width)+40
         height_output = int(height)+40
 
     elif m == '1':
+        so = [so, so, so]
+        f1 = np.array(df.loc['convergentLens','objetiveTriplet']['f'])
+        f2 = np.array(df.loc['divergentMeniscusLens','objetiveTriplet']['f'])
+        f3 = np.array(df.loc['concavePlaneLens','objetiveTriplet']['f'])
+        
+        fo = 1/(1/f1 + 1/f2 + 1/f3)
+        
+        f1 = np.array(df.loc['divergentLens','eyespaceTriplet']['f'])
+        f2 = np.array(df.loc['convergentMeniscusLens','eyespaceTriplet']['f'])
+        f3 = np.array(df.loc['convexPlaneLens','eyespaceTriplet']['f'])
+        
+        fe = 1/(1/f1 + 1/f2 + 1/f3)
+        
+        si1 = (fo*so)/(so-fo)
+        so2 = -(si1-(fo+fe))
+        si2 = (fe*so2)/(so2-fe)
     
-        d1 = df.loc['convergentLens','triplet']['d']
+        print("si2: ", si2)
+        
+        si = si2
+        
+        """d1 = df.loc['convergentLens','triplet']['d']
         d2 = df.loc['divergentLens','triplet']['d']
         d3 = df.loc['planarConvergentLens','triplet']['d']
 
@@ -82,7 +102,7 @@ def telescope_system(m, l, url):
 
         si = (f*so)/(so-f)
         print("so: ", so)
-        print("si: ", si)
+        print("si: ", si)"""
         
         width_output = int(width)
         height_output = int(height)

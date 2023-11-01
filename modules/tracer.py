@@ -43,6 +43,27 @@ def compute_lens_matrix(l):
         A = np.array([[[AR[0][0], AG[0][0], AB[0][0]], [AR[0][1], AG[0][1], AB[0][1]]] , [[AR[1][0], AG[1][0], AB[1][0]], [AR[1][1], AG[1][1], AB[1][1]]]])
     return A
 
+def correction(l):
+    df = pd.read_json("data/lenses.json")
+    
+    f1 = np.array(df.loc['convergentLens','objetiveTriplet']['f'])
+    f2 = np.array(df.loc['divergentMeniscusLens','objetiveTriplet']['f'])
+    f3 = np.array(df.loc['concavePlaneLens','objetiveTriplet']['f'])
+    
+    fo = 1/(1/f1 + 1/f2 + 1/f3)
+    
+    f1 = np.array(df.loc['divergentLens','eyespaceTriplet']['f'])
+    f2 = np.array(df.loc['convergentMeniscusLens','eyespaceTriplet']['f'])
+    f3 = np.array(df.loc['convexPlaneLens','eyespaceTriplet']['f'])
+    
+    fe = 1/(1/f1 + 1/f2 + 1/f3)
+    
+    d = fo + fe
+    A = np.array([[-fe/fo, d], [[0, 0, 0], -fo/fe]])
+    
+    return A
+    
+
 def triplet(l):
     df = pd.read_json("data/lenses.json")
     
@@ -95,7 +116,7 @@ def ray_tracing(width, height, rayo, so, n1, obj, res, pixels, width_output, hei
         P1 = np.array([[[1, 1, 1], [so/n1, so/n1, so/n1]],[[0, 0, 0], [1, 1, 1]]])
         
     elif(m == '1'):
-        T = triplet(l)
+        T = correction(l)
         P2 = np.array([[[1, 1, 1], [si[0]/n1, si[1]/n1, si[2]/n1]],[[0, 0, 0], [1, 1, 1]]])
         P1 = np.array([[[1, 1, 1], [so[0]/n1, so[1]/n1, so[2]/n1]],[[0, 0, 0], [1, 1, 1]]])
         
@@ -151,8 +172,8 @@ def ray_tracing(width, height, rayo, so, n1, obj, res, pixels, width_output, hei
                 y_prime = y*(126/1.6)*Mt
                 
             elif(m == '1'):
-                x_prime = x*Mt
-                y_prime = y*Mt
+                x_prime = x*(126/1.6)*Mt
+                y_prime = y*(126/1.6)*Mt
             
             pos_x_prime = [int(x_prime[0] + width_output/2), int(x_prime[1] + width_output/2), int(x_prime[2] + width_output/2)]
             pos_y_prime = [int(y_prime[0] + height_output/2), int(y_prime[1] + height_output/2), int(y_prime[2] + height_output/2)]
