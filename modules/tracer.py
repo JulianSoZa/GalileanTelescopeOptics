@@ -2,7 +2,7 @@ import numpy as np
 import math
 import pandas as pd
 
-def compute_lens_matrix(l):
+def compute_lens_matrix_singlet(l):
     df = pd.read_json("data/lenses.json")
     
     if l == 'd':
@@ -44,7 +44,7 @@ def compute_lens_matrix(l):
         A = np.array([[[AR[0][0], AG[0][0], AB[0][0]], [AR[0][1], AG[0][1], AB[0][1]]] , [[AR[1][0], AG[1][0], AB[1][0]], [AR[1][1], AG[1][1], AB[1][1]]]])
     return A
 
-def correction(l):
+def compute_lens_matrix_triplet(l):
     df = pd.read_json("data/lenses.json") 
     if l == 'd':
 
@@ -90,14 +90,16 @@ def correction(l):
         r3e = df.loc['convexPlaneLens','eyespaceTriplet']['R']
         d3e = df.loc['convexPlaneLens','eyespaceTriplet']['d']
         
-        fo = 1/(1/((n1O - 1)*(1/r1O - 1/r2O + (n1O - 1)*d1O/(n1O*r1O*r2O))) + 1/((n2O - 1)*(1/r2O - 1/r3O + (n2O - 1)*d2O/(n2O*r2O*r3O))) + 1/((n3O - 1)*(1/r3O)))
+        fo = 1/(1/(1/((n1O - 1)*(1/r1O - 1/r2O + (n1O - 1)*d1O/(n1O*r1O*r2O)))) + 1/(1/((n2O - 1)*(1/r2O - 1/r3O + (n2O - 1)*d2O/(n2O*r2O*r3O)))) + 1/(1/((n3O - 1)*(1/r3O))))
         
-        fe = 1/(1/((n1e - 1)*(1/r1e - 1/r2e + (n1e - 1)*d1e/(n1e*r1e*r2e))) + 1/((n2e - 1)*(1/r2e - 1/r3e + (n2e - 1)*d2e/(n2e*r2e*r3e))) + 1/((n3e - 1)*(1/r3e)))
+        fe = 1/(1/(1/((n1e - 1)*(1/r1e - 1/r2e + (n1e - 1)*d1e/(n1e*r1e*r2e)))) + 1/(1/((n2e - 1)*(1/r2e - 1/r3e + (n2e - 1)*d2e/(n2e*r2e*r3e)))) + 1/(1/((n3e - 1)*(1/r3e))))
+
+        f2 = 1/(1/(1/((n2O - 1)*(1/r2O - 1/r3O + (n2O - 1)*d2O/(n2O*r2O*r3O)))) + 1/(1/((n3O - 1)*(1/r3O))))
+        print(f2)
         
-        print('fo', fo)
-        print('fe', fe)
+        hv = fo*12/f2 - 1
         
-        dsep = 690-6-6
+        dsep = fo + fe + hv
         
         A = []
         for i in range(3):
@@ -109,7 +111,7 @@ def correction(l):
             T34 = np.array([[1, d1e/n1e[i]] , [0, 1]])
             R4 = np.array([[1, 0] , [(1-n1e[i])/r1e, 1]])
             
-            T45 = np.array([[1, dsep/1] , [0, 1]])
+            T45 = np.array([[1, dsep[i]/1] , [0, 1]])
             
             R5 = np.array([[1, 0] , [0, 1]])
             T56 = np.array([[1, d3O/n3O[i]] , [0, 1]])
@@ -126,61 +128,19 @@ def correction(l):
         A = np.array([[[AR[0][0], AG[0][0], AB[0][0]], [AR[0][1], AG[0][1], AB[0][1]]] , [[AR[1][0], AG[1][0], AB[1][0]], [AR[1][1], AG[1][1], AB[1][1]]]])
         
     return A
-    
-
-def triplet(l):
-    df = pd.read_json("data/lenses.json")
-    
-    if l == 'd': 
-        #------------------- Sistema de lentes delgadas -------------
-        f1 = np.array(df.loc['convergentLens','triplet']['f'])
-        f2 = np.array(df.loc['divergentLens','triplet']['f'])
-        f3 = np.array(df.loc['planarConvergentLens','triplet']['f'])
-        
-        T = np.array([[[1, 1, 1], [0, 0, 0]], [-(f1*f2 + f1*f3 + f2*f3)/(f1*f2*f3), [1, 1, 1]]])
-        
-    elif l == 'g':
-        # ------------------ Sistema de lentes gruesas --------------
-        
-        dE = np.array(df.loc['planarConvergentLens','triplet']['d'])
-        nE = np.array(df.loc['planarConvergentLens','triplet']['n'])
-        nD = np.array(df.loc['divergentLens','triplet']['n'])
-        rD = np.array(df.loc['divergentLens','triplet']['R'])
-        dD = np.array(df.loc['divergentLens','triplet']['d'])
-        nC = np.array(df.loc['convergentLens','triplet']['n'])
-        dC = np.array(df.loc['convergentLens','triplet']['d'])
-        rC = np.array(df.loc['convergentLens','triplet']['R'])
-        
-        T = []
-        for i in range(3):
-            R1 = np.array([[1, 0] , [0, 1]])
-            T12 = np.array([[1, dE/nE[i]] , [0, 1]])
-            R2 = np.array([[1, 0] , [(nD[i]-nE[i])/rD, 1]])
-            T23 = np.array([[1, dD/nD[i]] , [0, 1]])
-            R3 = np.array([[1, 0] , [(nC[i]-nD[i])/(-rD), 1]])
-            T34 = np.array([[1, dC/nC[i]] , [0, 1]])
-            R4 = np.array([[1, 0] , [(1-nC[i])/(rC), 1]])
-
-            T.append(R1@T12@R2@T23@R3@T34@R4)
-            
-        TR, TG, TB = T[0], T[1], T[2]
-
-        T = np.array([[[TR[0][0], TG[0][0], TB[0][0]], [TR[0][1], TG[0][1], TB[0][1]]] , [[TR[1][0], TG[1][0], TB[1][0]], [TR[1][1], TG[1][1], TB[1][1]]]])
-        
-    return T
 
 def ray_tracing(width, height, rayo, so, n1, obj, res, pixels, width_output, height_output, si2, m, l):
     
     si = si2
 
     if(m == '0'):
-        A = compute_lens_matrix(l)
+        A = compute_lens_matrix_singlet(l)
         # Define propagation matrices after and before the lens
         P2 = np.array([[[1, 1, 1], [si[0]/n1, si[1]/n1, si[2]/n1]],[[0, 0, 0], [1, 1, 1]]])
         P1 = np.array([[[1, 1, 1], [so/n1, so/n1, so/n1]],[[0, 0, 0], [1, 1, 1]]])
         
     elif(m == '1'):
-        T = correction(l)
+        T = compute_lens_matrix_triplet(l)
         P2 = np.array([[[1, 1, 1], [si[0]/n1, si[1]/n1, si[2]/n1]],[[0, 0, 0], [1, 1, 1]]])
         P1 = np.array([[[1, 1, 1], [so/n1, so/n1, so/n1]],[[0, 0, 0], [1, 1, 1]]])
         

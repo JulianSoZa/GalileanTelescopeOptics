@@ -173,12 +173,12 @@ def telescope_system(m, l, url):
 
     if m == '0':
         #Compute the cummulated image with parallel ray
-        pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, l)
+        #pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, l)
         pixels = ray_tracing(width, height, PARALLEL_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, l)    
         image.save('img/nuevaImagen.png', format='PNG')
         
     elif m == '1':
         #Compute the cummulated image with parallel ray
-        pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, l)
+        #pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, l)
         pixels = ray_tracing(width, height, PARALLEL_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, l)    
         image.save('img/nuevaImagenAberracionCorregida.png', format='PNG')

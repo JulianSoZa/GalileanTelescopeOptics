@@ -185,7 +185,7 @@ A = np.array([[[AR[0][0], AG[0][0], AB[0][0]], [AR[0][1], AG[0][1], AB[0][1]]] ,
 print(A)
 """
 
-dE = np.array(df.loc['planarConvergentLens','triplet']['d'])
+"""dE = np.array(df.loc['planarConvergentLens','triplet']['d'])
 nE = np.array(df.loc['planarConvergentLens','triplet']['n'])
 rE = np.array(df.loc['planarConvergentLens','triplet']['R'])
 nD = np.array(df.loc['divergentLens','triplet']['n'])
@@ -199,4 +199,39 @@ f3 = 1/((nE-1)*(1/rE))
 f2 = 1/((nD-1)*((1/(-rD))-(1/(rD))+(((nD-1)*dD)/(nD*rD*(-rD)))))
 f1 = 1/((nC-1)*((1/rC)-(1/(-rC))+(((nC-1)*dC)/(nC*rC*(-rC)))))
 
-print(f1, f2, f3)
+print(f1, f2, f3)"""
+
+n1O =  np.array(df.loc['convergentLens','objetiveTriplet']['n'])
+r1O = df.loc['convergentLens','objetiveTriplet']['R']
+d1O = df.loc['convergentLens','objetiveTriplet']['d']
+
+n2O =  np.array(df.loc['divergentMeniscusLens','objetiveTriplet']['n'])
+r2O = df.loc['divergentMeniscusLens','objetiveTriplet']['R']
+d2O = df.loc['divergentMeniscusLens','objetiveTriplet']['d']
+
+n3O =  np.array(df.loc['concavePlaneLens','objetiveTriplet']['n'])
+r3O = df.loc['concavePlaneLens','objetiveTriplet']['R']
+d3O = df.loc['concavePlaneLens','objetiveTriplet']['d']
+
+# --- Ocular -----
+n1e =  np.array(df.loc['divergentLens','eyespaceTriplet']['n'])
+r1e = df.loc['divergentLens','eyespaceTriplet']['R']
+d1e = df.loc['divergentLens','eyespaceTriplet']['d']
+
+n2e = np.array(df.loc['convergentMeniscusLens','eyespaceTriplet']['n'])
+r2e = df.loc['convergentMeniscusLens','eyespaceTriplet']['R']
+d2e = df.loc['convergentMeniscusLens','eyespaceTriplet']['d']
+
+n3e = np.array(df.loc['convexPlaneLens','eyespaceTriplet']['n'])
+r3e = df.loc['convexPlaneLens','eyespaceTriplet']['R']
+d3e = df.loc['convexPlaneLens','eyespaceTriplet']['d']
+
+fo = 1/(1/((n1O - 1)*(1/r1O - 1/r2O + (n1O - 1)*d1O/(n1O*r1O*r2O))) + 1/((n2O - 1)*(1/r2O - 1/r3O + (n2O - 1)*d2O/(n2O*r2O*r3O))) + 1/((n3O - 1)*(1/r3O)))
+fo1 = 1/((n1O - 1)*(1/r1O - 1/r2O + (n1O - 1)*d1O/(n1O*r1O*r2O)))
+f02 = 1/((n2O - 1)*(1/r2O - 1/r3O + (n2O - 1)*d2O/(n2O*r2O*r3O)))
+f03 = 1/((n3O - 1)*(1/r3O))
+
+fo = (1/fo1 + 2)
+fe = 1/(1/((n1e - 1)*(1/r1e - 1/r2e + (n1e - 1)*d1e/(n1e*r1e*r2e))) + 1/((n2e - 1)*(1/r2e - 1/r3e + (n2e - 1)*d2e/(n2e*r2e*r3e))) + 1/((n3e - 1)*(1/r3e)))
+print('fo', 1/((n3O - 1)*(1/r3O)))
+print('fe', fe)
