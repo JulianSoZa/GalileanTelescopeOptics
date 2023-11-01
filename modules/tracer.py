@@ -15,7 +15,6 @@ def compute_lens_matrix(l):
         
     elif l == 'g':
         # ------------------ Sistema de lentes gruesas --------------
-        
         nA = np.array(df.loc['objective','mainSystem']['n'])
         rA = np.array(df.loc['objective','mainSystem']['R'])
         dA = np.array(df.loc['objective','mainSystem']['d'])
@@ -25,6 +24,8 @@ def compute_lens_matrix(l):
         
         fA = 1/((nA-1)*((1/rA)-(1/(-rA))+(((nA-1)*dA)/(nA*rA*(-rA)))))
         fB = 1/((nB-1)*((1/(-rB))-(1/(rB))+(((nB-1)*dB)/(nB*rB*(-rB)))))
+        
+        print(fA, fB)
         
         A = []
         for i in range(3):
@@ -44,23 +45,86 @@ def compute_lens_matrix(l):
     return A
 
 def correction(l):
-    df = pd.read_json("data/lenses.json")
-    
-    f1 = np.array(df.loc['convergentLens','objetiveTriplet']['f'])
-    f2 = np.array(df.loc['divergentMeniscusLens','objetiveTriplet']['f'])
-    f3 = np.array(df.loc['concavePlaneLens','objetiveTriplet']['f'])
-    
-    fo = 1/(1/f1 + 1/f2 + 1/f3)
-    
-    f1 = np.array(df.loc['divergentLens','eyespaceTriplet']['f'])
-    f2 = np.array(df.loc['convergentMeniscusLens','eyespaceTriplet']['f'])
-    f3 = np.array(df.loc['convexPlaneLens','eyespaceTriplet']['f'])
-    
-    fe = 1/(1/f1 + 1/f2 + 1/f3)
-    
-    d = fo + fe
-    A = np.array([[-fe/fo, d], [[0, 0, 0], -fo/fe]])
-    
+    df = pd.read_json("data/lenses.json") 
+    if l == 'd':
+
+        f1 = np.array(df.loc['convergentLens','objetiveTriplet']['f'])
+        f2 = np.array(df.loc['divergentMeniscusLens','objetiveTriplet']['f'])
+        f3 = np.array(df.loc['concavePlaneLens','objetiveTriplet']['f'])
+
+        fo = 1/(1/f1 + 1/f2 + 1/f3)
+
+        f1 = np.array(df.loc['divergentLens','eyespaceTriplet']['f'])
+        f2 = np.array(df.loc['convergentMeniscusLens','eyespaceTriplet']['f'])
+        f3 = np.array(df.loc['convexPlaneLens','eyespaceTriplet']['f'])
+
+        fe = 1/(1/f1 + 1/f2 + 1/f3)
+
+        d = fo + fe
+        A = np.array([[-fe/fo, d], [[0, 0, 0], -fo/fe]])
+        
+    elif l == 'g':
+        # --- Objetivo -----
+        n1O =  np.array(df.loc['convergentLens','objetiveTriplet']['n'])
+        r1O = df.loc['convergentLens','objetiveTriplet']['R']
+        d1O = df.loc['convergentLens','objetiveTriplet']['d']
+        
+        n2O =  np.array(df.loc['divergentMeniscusLens','objetiveTriplet']['n'])
+        r2O = df.loc['divergentMeniscusLens','objetiveTriplet']['R']
+        d2O = df.loc['divergentMeniscusLens','objetiveTriplet']['d']
+        
+        n3O =  np.array(df.loc['concavePlaneLens','objetiveTriplet']['n'])
+        r3O = df.loc['concavePlaneLens','objetiveTriplet']['R']
+        d3O = df.loc['concavePlaneLens','objetiveTriplet']['d']
+        
+        # --- Ocular -----
+        n1e =  np.array(df.loc['divergentLens','eyespaceTriplet']['n'])
+        r1e = df.loc['divergentLens','eyespaceTriplet']['R']
+        d1e = df.loc['divergentLens','eyespaceTriplet']['d']
+        
+        n2e = np.array(df.loc['convergentMeniscusLens','eyespaceTriplet']['n'])
+        r2e = df.loc['convergentMeniscusLens','eyespaceTriplet']['R']
+        d2e = df.loc['convergentMeniscusLens','eyespaceTriplet']['d']
+        
+        n3e = np.array(df.loc['convexPlaneLens','eyespaceTriplet']['n'])
+        r3e = df.loc['convexPlaneLens','eyespaceTriplet']['R']
+        d3e = df.loc['convexPlaneLens','eyespaceTriplet']['d']
+        
+        fo = 1/(1/((n1O - 1)*(1/r1O - 1/r2O + (n1O - 1)*d1O/(n1O*r1O*r2O))) + 1/((n2O - 1)*(1/r2O - 1/r3O + (n2O - 1)*d2O/(n2O*r2O*r3O))) + 1/((n3O - 1)*(1/r3O)))
+        
+        fe = 1/(1/((n1e - 1)*(1/r1e - 1/r2e + (n1e - 1)*d1e/(n1e*r1e*r2e))) + 1/((n2e - 1)*(1/r2e - 1/r3e + (n2e - 1)*d2e/(n2e*r2e*r3e))) + 1/((n3e - 1)*(1/r3e)))
+        
+        print('fo', fo)
+        print('fe', fe)
+        
+        dsep = 690-6-6
+        
+        A = []
+        for i in range(3):
+            R1 = np.array([[1, 0] , [0, 1]])
+            T12 = np.array([[1, d3e/n3e[i]] , [0, 1]])
+            R2 = np.array([[1, 0] , [(n2e[i]-n3e[i])/r3e, 1]])
+            T23 = np.array([[1, d2e/n2e[i]] , [0, 1]])
+            R3 = np.array([[1, 0] , [(n1e[i]-n2e[i])/r2e, 1]])
+            T34 = np.array([[1, d1e/n1e[i]] , [0, 1]])
+            R4 = np.array([[1, 0] , [(1-n1e[i])/r1e, 1]])
+            
+            T45 = np.array([[1, dsep/1] , [0, 1]])
+            
+            R5 = np.array([[1, 0] , [0, 1]])
+            T56 = np.array([[1, d3O/n3O[i]] , [0, 1]])
+            R6 = np.array([[1, 0] , [(n2O[i]-n3O[i])/r3O, 1]])
+            T67 = np.array([[1, d2O/n2O[i]] , [0, 1]])
+            R7 = np.array([[1, 0] , [(n1O[i]-n2O[i])/r2O, 1]])
+            T78 = np.array([[1, d1O/n1O[i]] , [0, 1]])
+            R8 = np.array([[1, 0] , [(1-n1O[i])/r1O, 1]])
+            
+            A.append(R1@T12@R2@T23@R3@T34@R4@T45@R5@T56@R6@T67@R7@T78@R8)
+        
+        AR, AG, AB = A[0], A[1], A[2]
+
+        A = np.array([[[AR[0][0], AG[0][0], AB[0][0]], [AR[0][1], AG[0][1], AB[0][1]]] , [[AR[1][0], AG[1][0], AB[1][0]], [AR[1][1], AG[1][1], AB[1][1]]]])
+        
     return A
     
 
@@ -118,7 +182,7 @@ def ray_tracing(width, height, rayo, so, n1, obj, res, pixels, width_output, hei
     elif(m == '1'):
         T = correction(l)
         P2 = np.array([[[1, 1, 1], [si[0]/n1, si[1]/n1, si[2]/n1]],[[0, 0, 0], [1, 1, 1]]])
-        P1 = np.array([[[1, 1, 1], [so[0]/n1, so[1]/n1, so[2]/n1]],[[0, 0, 0], [1, 1, 1]]])
+        P1 = np.array([[[1, 1, 1], [so/n1, so/n1, so/n1]],[[0, 0, 0], [1, 1, 1]]])
         
     # Iterate over each pixel of the image
     for i in range(width):
@@ -152,7 +216,7 @@ def ray_tracing(width, height, rayo, so, n1, obj, res, pixels, width_output, hei
                 
             elif(m == '1'):
                 if rayo == 0: #principal
-                    alpha_entrada = [-math.atan(y_objeto/so[0]), -math.atan(y_objeto/so[1]), -math.atan(y_objeto/so[2])]
+                    alpha_entrada = [-math.atan(y_objeto/so), -math.atan(y_objeto/so), -math.atan(y_objeto/so)]
                 elif rayo == 1: #parallel
                     alpha_entrada = [0, 0, 0] #This ray enters parallel to the optical axis
                 V_entrada = np.array([[y_objeto, y_objeto, y_objeto], [n1*alpha_entrada[0], n1*alpha_entrada[1], n1*alpha_entrada[2]]])

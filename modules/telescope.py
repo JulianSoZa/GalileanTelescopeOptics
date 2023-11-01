@@ -47,23 +47,115 @@ def telescope_system(m, l, url):
         print("si2: ", si2)
         
         si = si2
-        width_output = int(width)+40
-        height_output = int(height)+40
 
     elif m == '1':
-        so = [so, so, so]
-        f1 = np.array(df.loc['convergentLens','objetiveTriplet']['f'])
-        f2 = np.array(df.loc['divergentMeniscusLens','objetiveTriplet']['f'])
-        f3 = np.array(df.loc['concavePlaneLens','objetiveTriplet']['f'])
         
-        fo = 1/(1/f1 + 1/f2 + 1/f3)
-        
-        f1 = np.array(df.loc['divergentLens','eyespaceTriplet']['f'])
-        f2 = np.array(df.loc['convergentMeniscusLens','eyespaceTriplet']['f'])
-        f3 = np.array(df.loc['convexPlaneLens','eyespaceTriplet']['f'])
-        
-        fe = 1/(1/f1 + 1/f2 + 1/f3)
-        
+        if l == 'd':
+            so = so
+            f1 = np.array(df.loc['convergentLens','objetiveTriplet']['f'])
+            f2 = np.array(df.loc['divergentMeniscusLens','objetiveTriplet']['f'])
+            f3 = np.array(df.loc['concavePlaneLens','objetiveTriplet']['f'])
+            
+            fo = 1/(1/f1 + 1/f2 + 1/f3)
+            
+            f1 = np.array(df.loc['divergentLens','eyespaceTriplet']['f'])
+            f2 = np.array(df.loc['convergentMeniscusLens','eyespaceTriplet']['f'])
+            f3 = np.array(df.loc['convexPlaneLens','eyespaceTriplet']['f'])
+            
+            fe = 1/(1/f1 + 1/f2 + 1/f3)
+            
+        elif l == 'g':
+            so = so
+            #objetivo 
+            n1OR =  df.loc['convergentLens','objetiveTriplet']['n'][0]
+            n1OG =  df.loc['convergentLens','objetiveTriplet']['n'][1]
+            n1OB =  df.loc['convergentLens','objetiveTriplet']['n'][2]
+            r1O = df.loc['convergentLens','objetiveTriplet']['R']
+            d1O = df.loc['convergentLens','objetiveTriplet']['d']
+            
+            n2OR =  df.loc['divergentMeniscusLens','objetiveTriplet']['n'][0]
+            n2OG =  df.loc['divergentMeniscusLens','objetiveTriplet']['n'][1]
+            n2OB =  df.loc['divergentMeniscusLens','objetiveTriplet']['n'][2]
+            r2O = df.loc['divergentMeniscusLens','objetiveTriplet']['R']
+            d2O = df.loc['divergentMeniscusLens','objetiveTriplet']['d']
+            
+            n3OR =  df.loc['concavePlaneLens','objetiveTriplet']['n'][0]
+            n3OG =  df.loc['concavePlaneLens','objetiveTriplet']['n'][1]
+            n3OB =  df.loc['concavePlaneLens','objetiveTriplet']['n'][2]
+            r3O = df.loc['concavePlaneLens','objetiveTriplet']['R']
+            d3O = df.loc['concavePlaneLens','objetiveTriplet']['d']
+            
+            f1R = 1/((n1OR - 1)*(1/r1O - 1/r2O + (n1OR - 1)*d1O/(n1OR*r1O*r2O)))
+
+            f1G = 1/((n1OG - 1)*(1/r1O - 1/r2O + (n1OG - 1)*d1O/(n1OG*r1O*r2O)))
+
+            f1B = 1/((n1OB - 1)*(1/r1O - 1/r2O + (n1OB - 1)*d1O/(n1OB*r1O*r2O)))
+
+            f2R = 1/((n2OR - 1)*(1/r2O - 1/r3O + (n2OR - 1)*d2O/(n2OR*r2O*r3O)))
+
+            f2G = 1/((n2OG - 1)*(1/r2O - 1/r3O + (n2OG - 1)*d2O/(n2OG*r2O*r3O)))
+
+            f2B = 1/((n2OB - 1)*(1/r2O - 1/r3O + (n2OB - 1)*d2O/(n2OB*r2O*r3O)))
+
+            f3R = 1/((n3OR - 1)*(1/r3O))
+
+            f3G = 1/((n3OG - 1)*(1/r3O))
+
+            f3B = 1/((n3OB - 1)*(1/r3O))
+            
+            fR = 1/(1/f1R + 1/f2R + 1/f3R)
+            fG = 1/(1/f1G + 1/f2G + 1/f3G)
+            fB = 1/(1/f1B + 1/f2B + 1/f3B)
+            
+            fo = np.array([fR, fG, fB])
+            
+            #ocular
+            
+            n1eR =  df.loc['divergentLens','eyespaceTriplet']['n'][0]
+            n1eG =  df.loc['divergentLens','eyespaceTriplet']['n'][1]
+            n1eB =  df.loc['divergentLens','eyespaceTriplet']['n'][2]
+            r1e = df.loc['divergentLens','eyespaceTriplet']['R']
+            d1e = df.loc['divergentLens','eyespaceTriplet']['d']
+            
+            n2eR =  df.loc['convergentMeniscusLens','eyespaceTriplet']['n'][0]
+            n2eG =  df.loc['convergentMeniscusLens','eyespaceTriplet']['n'][1]
+            n2eB =  df.loc['convergentMeniscusLens','eyespaceTriplet']['n'][2]
+            r2e = df.loc['convergentMeniscusLens','eyespaceTriplet']['R']
+            d2e = df.loc['convergentMeniscusLens','eyespaceTriplet']['d']
+            
+            n3eR =  df.loc['convexPlaneLens','eyespaceTriplet']['n'][0]
+            n3eG =  df.loc['convexPlaneLens','eyespaceTriplet']['n'][1]
+            n3eB =  df.loc['convexPlaneLens','eyespaceTriplet']['n'][2]
+            r3e = df.loc['convexPlaneLens','eyespaceTriplet']['R']
+            d3e = df.loc['convexPlaneLens','eyespaceTriplet']['d']
+            
+            f1R = 1/((n1eR - 1)*(1/r1e - 1/r2e + (n1eR - 1)*d1e/(n1eR*r1e*r2e)))
+
+            f1G = 1/((n1eG - 1)*(1/r1e - 1/r2e + (n1eG - 1)*d1e/(n1eG*r1e*r2e)))
+
+            f1B = 1/((n1eB - 1)*(1/r1e - 1/r2e + (n1eB - 1)*d1e/(n1eB*r1e*r2e)))
+
+            f2R = 1/((n2eR - 1)*(1/r2e - 1/r3e + (n2eR - 1)*d2e/(n2eR*r2e*r3e)))
+
+            f2G = 1/((n2eG - 1)*(1/r2e - 1/r3e + (n2eG - 1)*d2e/(n2eG*r2e*r3e)))
+
+            f2B = 1/((n2eB - 1)*(1/r2e - 1/r3e + (n2eB - 1)*d2e/(n2eB*r2e*r3e)))
+
+            f3R = 1/((n3eR - 1)*(1/r3e))
+
+            f3G = 1/((n3eG - 1)*(1/r3e))
+
+            f3B = 1/((n3eB - 1)*(1/r3e))
+            
+            fR = 1/(1/f1R + 1/f2R + 1/f3R)
+            fG = 1/(1/f1G + 1/f2G + 1/f3G)
+            fB = 1/(1/f1B + 1/f2B + 1/f3B)
+            
+            fe = np.array([fR, fG, fB])
+            
+            print('fo t:', fo)
+            print('fe t:', fe)
+            
         si1 = (fo*so)/(so-fo)
         so2 = -(si1-(fo+fe))
         si2 = (fe*so2)/(so2-fe)
@@ -72,40 +164,8 @@ def telescope_system(m, l, url):
         
         si = si2
         
-        """d1 = df.loc['convergentLens','triplet']['d']
-        d2 = df.loc['divergentLens','triplet']['d']
-        d3 = df.loc['planarConvergentLens','triplet']['d']
-
-        so = 18*2 + (d1+d2+d3)/2 - si2
-        
-        if l == 'd':
-            f1 = np.array(df.loc['convergentLens','triplet']['f'])
-            f2 = np.array(df.loc['divergentLens','triplet']['f'])
-            f3 = np.array(df.loc['planarConvergentLens','triplet']['f'])
-            
-        elif l == 'g':
-            dE = np.array(df.loc['planarConvergentLens','triplet']['d'])
-            nE = np.array(df.loc['planarConvergentLens','triplet']['n'])
-            rE = np.array(df.loc['planarConvergentLens','triplet']['R'])
-            nD = np.array(df.loc['divergentLens','triplet']['n'])
-            rD = np.array(df.loc['divergentLens','triplet']['R'])
-            dD = np.array(df.loc['divergentLens','triplet']['d'])
-            nC = np.array(df.loc['convergentLens','triplet']['n'])
-            dC = np.array(df.loc['convergentLens','triplet']['d'])
-            rC = np.array(df.loc['convergentLens','triplet']['R'])
-            
-            f3 = 1/((nE-1)*(1/rE))
-            f2 = 1/((nD-1)*((1/(-rD))-(1/(rD))+(((nD-1)*dD)/(nD*rD*(-rD)))))
-            f1 = 1/((nC-1)*((1/rC)-(1/(-rC))+(((nC-1)*dC)/(nC*rC*(-rC)))))
-
-        f = 1/((1/f1)+(1/f2)+(1/f3))
-
-        si = (f*so)/(so-f)
-        print("so: ", so)
-        print("si: ", si)"""
-        
-        width_output = int(width)
-        height_output = int(height)
+    width_output = int(width)+40
+    height_output = int(height)+40
 
     image = Image.new("RGB", (width_output, height_output), "white")
 
