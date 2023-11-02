@@ -201,7 +201,7 @@ f1 = 1/((nC-1)*((1/rC)-(1/(-rC))+(((nC-1)*dC)/(nC*rC*(-rC)))))
 
 print(f1, f2, f3)"""
 
-n1O =  np.array(df.loc['convergentLens','objetiveTriplet']['n'])
+"""n1O =  np.array(df.loc['convergentLens','objetiveTriplet']['n'])
 r1O = df.loc['convergentLens','objetiveTriplet']['R']
 d1O = df.loc['convergentLens','objetiveTriplet']['d']
 
@@ -234,4 +234,18 @@ f03 = 1/((n3O - 1)*(1/r3O))
 fo = (1/fo1 + 2)
 fe = 1/(1/((n1e - 1)*(1/r1e - 1/r2e + (n1e - 1)*d1e/(n1e*r1e*r2e))) + 1/((n2e - 1)*(1/r2e - 1/r3e + (n2e - 1)*d2e/(n2e*r2e*r3e))) + 1/((n3e - 1)*(1/r3e)))
 print('fo', 1/((n3O - 1)*(1/r3O)))
-print('fe', fe)
+print('fe', fe)"""
+
+n = ['s', 'h', 'p']
+n.remove('h')
+
+print(n)
+
+images = pd.read_json("data/images.json")
+
+print(images)
+if True:
+    images = images.drop('moon', axis=1)
+
+print(images)
+    

@@ -40,7 +40,7 @@ t = True
 
 while d == True:
     
-    print('Escoja el sistema de procesamiento: \n 1. Sistema con singletes \n 2. Sistema con tripletes \n 3. Interpolación \n 4. Gráficas \n 5. Sistema aberrado e interpolado \n 6. Sistema sin aberración e interpolado \n 7. Analisis de resultados')
+    print('Escoja el sistema de procesamiento: \n 1. Sistema con singletes \n 2. Sistema con tripletes \n 3. Interpolación \n 4. Gráficas (asegurese de tener las imagenes que requiere) \n 5. Sistema aberrado e interpolado \n 6. Sistema sin aberración e interpolado \n 7. Analisis de resultados')
     n = input()
     if(n == '1'):
         telescope.telescope_system('0', l, url)
@@ -55,7 +55,7 @@ while d == True:
         interpolation.interpolation_system(imgName, m)
 
     elif(n == '4'):
-        analysisResults.figures()
+        analysisResults.figures(url)
         
     elif(n == '5'):
         telescope.telescope_system('0', l, url)
@@ -75,7 +75,7 @@ while d == True:
         imgName = ['nuevaImagen', 'nuevaImagenAberracionCorregida', 'nuevaImagenAberradaInterpolada', 'nuevaImagenSinAberracionInterpolada']
         interpolation.interpolation_system(imgName, 2)
         analysisAberration.LCA_num()
-        analysisResults.figures()
+        analysisResults.figures(url)
 
     else:
         print('Por favor ingrese un valor valido')

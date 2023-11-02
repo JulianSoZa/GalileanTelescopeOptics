@@ -2,10 +2,15 @@ import cv2
 import matplotlib.pyplot as plt
 import pandas as pd
 
-def figures():
+def figures(url):
     print('\n---------- Graficas ----------\n')
     
     images = pd.read_json("data/images.json")
+    
+    if url == 'img/mars.jpg':
+        images = images.drop('moon', axis=1)
+    elif url == 'img/moon.png':
+        images = images.drop('mars', axis=1)
     
     fig4 = plt.figure()
     
