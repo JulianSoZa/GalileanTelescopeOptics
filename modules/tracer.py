@@ -18,7 +18,10 @@ def compute_lens_matrix_singlet(l): # funcion para hallar la matriz del sistema 
         
         d = f1 + f2 # separacion entre las lentes
         A = np.array([[-f2/f1, d], [[0, 0, 0], -f1/f2]]) # matriz del sistema para las tres dimensiones (Rojo, Verde, Azul)
-        
+    
+        print(f'\nFocales del objetivo:\n{f1}\n')
+        print(f'\nFocales del ocular:\n{f2}\n')    
+    
     elif l == 'g': # Calculo de la matriz del sistema para lentes gruesas
         # ------------------ Sistema de lentes gruesas --------------
         nA = np.array(df.loc['objective','mainSystem']['n']) # indices de refraccion de la lente objetivo para cada uno de los colores 
@@ -47,6 +50,12 @@ def compute_lens_matrix_singlet(l): # funcion para hallar la matriz del sistema 
 
         #Se halla la matriz del sistema con tres dimensiones (Rojo, Verde, Azul)
         A = np.array([[[AR[0][0], AG[0][0], AB[0][0]], [AR[0][1], AG[0][1], AB[0][1]]] , [[AR[1][0], AG[1][0], AB[1][0]], [AR[1][1], AG[1][1], AB[1][1]]]])
+
+        print(f'\nFocales del objetivo:\n{fA}\n')
+        print(f'\nFocales del ocular:\n{fB}\n')
+    
+    print(f'\nMatriz del sistema:\n{A}\n')
+    
     return A
 
 def compute_lens_matrix_triplet(l): # funcion para hallar la matriz del sistema para lentes gruesas y delgadas, para la configuracion de tripletes
@@ -135,7 +144,11 @@ def compute_lens_matrix_triplet(l): # funcion para hallar la matriz del sistema 
 
         #Se halla la matriz del sistema con tres dimensiones (Rojo, Verde, Azul)
         A = np.array([[[AR[0][0], AG[0][0], AB[0][0]], [AR[0][1], AG[0][1], AB[0][1]]] , [[AR[1][0], AG[1][0], AB[1][0]], [AR[1][1], AG[1][1], AB[1][1]]]])
-        
+    
+    print(f'\nFocales del objetivo:\n{fo}\n')
+    print(f'\nFocales del ocular:\n{fe}\n')    
+    print(f'\nMatriz del sistema:\n{A}\n')
+    
     return A
 
 #funcion para hacer el trazado de rayos
@@ -150,6 +163,9 @@ def ray_tracing(width, height, rayo, so, n1, obj, res, pixels, width_output, hei
     LCApor = 0 #Porcentaje de aberracion cromatica lateral respecto la magnificacion menor
     
     si = si2 #se cambia el nombre de la variable
+    
+    print(f'\nDistancia objeto:\n{so}\n')
+    print(f'\nDistancia imagen:\n{si}\n')
 
     if(m == '0'): #Se calculan las matrices de transformacion para el sistema con singletes (con aberracion)
         A = compute_lens_matrix_singlet(l) #matriz del sistema para lentes gruesas y delgadas (segun 'l'), para la configuracion de singletes
