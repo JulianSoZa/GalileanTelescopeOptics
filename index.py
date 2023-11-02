@@ -1,4 +1,4 @@
-from modules import telescope, interpolation, analysisResults
+from modules import telescope, interpolation, analysisResults, analysisAberration
 import pandas as pd
 
 d = True
@@ -74,6 +74,7 @@ while d == True:
         telescope.telescope_system('1', l, url)
         imgName = ['nuevaImagen', 'nuevaImagenAberracionCorregida', 'nuevaImagenAberradaInterpolada', 'nuevaImagenSinAberracionInterpolada']
         interpolation.interpolation_system(imgName, 2)
+        analysisAberration.LCA_num()
         analysisResults.figures()
 
     else:

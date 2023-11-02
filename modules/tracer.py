@@ -190,6 +190,9 @@ def ray_tracing(width, height, rayo, so, n1, obj, res, pixels, width_output, hei
 
             Mt = y_imagen/y_objeto
 
+            if Mt[0] != Mt[1] or Mt[0] != Mt[2] or Mt[1] != Mt[2]
+                w=0
+
             #Conversion from image coordinates to lens coordinates
             if(m == '0'):
                 x_prime = x*(126/1.6)*Mt
