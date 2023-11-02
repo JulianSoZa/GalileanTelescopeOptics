@@ -7,9 +7,12 @@ def telescope_system(m, l, url):
     df = pd.read_json("data/lenses.json") 
     
     if m == '0':
+        print('\n---------- Sistema con singletes (aberracion) ----------\n')
         obj = Image.open(url, "r")
+        
     elif m == '1':
-        obj = Image.open("img/mars.jpg", "r")
+        print('\n---------- Sistema con tripletes (sin aberracion) ----------\n')
+        obj = Image.open(url, "r")
         
     width, height = obj.size
 
@@ -43,8 +46,6 @@ def telescope_system(m, l, url):
         si1 = (f1*so)/(so-f1)
         so2 = -(si1-(f1+f2))
         si2 = (f2*so2)/(so2-f2)
-    
-        print("si2: ", si2)
         
         si = si2
 
@@ -153,14 +154,9 @@ def telescope_system(m, l, url):
             
             fe = np.array([fR, fG, fB])
             
-            print('fo t:', fo)
-            print('fe t:', fe)
-            
         si1 = (fo*so)/(so-fo)
         so2 = -(si1-(fo+fe))
         si2 = (fe*so2)/(so2-fe)
-    
-        print("si2: ", si2)
         
         si = si2
         
@@ -170,15 +166,19 @@ def telescope_system(m, l, url):
     image = Image.new("RGB", (width_output, height_output), "white")
 
     pixels = image.load()
+    
+    print('\n---------- Trazado de rayos ----------\n')
 
     if m == '0':
-        #Compute the cummulated image with parallel ray
-        #pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, l)
+        print('\nChief ray:\n')
+        pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, l)
+        print('\nParallel ray:\n')
         pixels = ray_tracing(width, height, PARALLEL_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, l)    
         image.save('img/nuevaImagen.png', format='PNG')
         
     elif m == '1':
-        #Compute the cummulated image with parallel ray
-        #pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, l)
+        print('\nChief ray:\n')
+        pixels = ray_tracing(width, height, CHIEF_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, l)
+        print('\nParallel ray:\n')
         pixels = ray_tracing(width, height, PARALLEL_RAY, so, n1, obj, res, pixels, width_output, height_output, si, m, l)    
         image.save('img/nuevaImagenAberracionCorregida.png', format='PNG')

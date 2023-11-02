@@ -25,8 +25,6 @@ def compute_lens_matrix_singlet(l):
         fA = 1/((nA-1)*((1/rA)-(1/(-rA))+(((nA-1)*dA)/(nA*rA*(-rA)))))
         fB = 1/((nB-1)*((1/(-rB))-(1/(rB))+(((nB-1)*dB)/(nB*rB*(-rB)))))
         
-        print(fA, fB)
-        
         A = []
         for i in range(3):
             R5 = np.array([[1, 0] , [(nB[i]-1)/(rB), 1]])
@@ -95,8 +93,7 @@ def compute_lens_matrix_triplet(l):
         fe = 1/(1/(1/((n1e - 1)*(1/r1e - 1/r2e + (n1e - 1)*d1e/(n1e*r1e*r2e)))) + 1/(1/((n2e - 1)*(1/r2e - 1/r3e + (n2e - 1)*d2e/(n2e*r2e*r3e)))) + 1/(1/((n3e - 1)*(1/r3e))))
 
         f2 = 1/(1/(1/((n2O - 1)*(1/r2O - 1/r3O + (n2O - 1)*d2O/(n2O*r2O*r3O)))) + 1/(1/((n3O - 1)*(1/r3O))))
-        print(f2)
-        
+
         hv = fo*12/f2 - 1
         
         dsep = fo + fe + hv
@@ -130,6 +127,13 @@ def compute_lens_matrix_triplet(l):
     return A
 
 def ray_tracing(width, height, rayo, so, n1, obj, res, pixels, width_output, height_output, si2, m, l):
+    
+    LCA = 0
+    LCAmax = 0
+    LCAarg = 0
+    LCAargMax = 0
+    LCAcolors =  ['RG', 'RB', 'GB']
+    LCApor = 0
     
     si = si2
 
@@ -190,8 +194,37 @@ def ray_tracing(width, height, rayo, so, n1, obj, res, pixels, width_output, hei
 
             Mt = y_imagen/y_objeto
 
-            if Mt[0] != Mt[1] or Mt[0] != Mt[2] or Mt[1] != Mt[2]
-                w=0
+            if Mt[0] != Mt[1] or Mt[0] != Mt[2] or Mt[1] != Mt[2]:
+                RG = abs(Mt[0] - Mt[1])
+                RB = abs(Mt[0] - Mt[2])
+                GB = abs(Mt[1] - Mt[2])
+                
+                LCAmax = np.max([RG, RB, GB])
+                LCAargMax = np.argmax([RG, RB, GB])
+                
+            if LCA < LCAmax:
+                LCA = LCAmax
+                LCAarg = LCAargMax
+                
+                if LCAarg == 0:
+                    LCAmtR = Mt[0]
+                    LCAmtG = Mt[1]
+                    
+                    LCApor = (abs(LCAmtR - LCAmtG)/LCAmtG)*100
+                    
+                elif LCAarg == 1:
+                    
+                    LCAmtR = Mt[0]
+                    LCAmtB = Mt[2]
+                    
+                    LCApor = (abs(LCAmtR - LCAmtB)/LCAmtB)*100
+                    
+                elif LCAarg == 2:
+                    
+                    LCAmtG = Mt[1]
+                    LCAmtB = Mt[2]
+                    
+                    LCApor = (abs(LCAmtG - LCAmtB)/LCAmtB)*100
 
             #Conversion from image coordinates to lens coordinates
             if(m == '0'):
@@ -228,4 +261,9 @@ def ray_tracing(width, height, rayo, so, n1, obj, res, pixels, width_output, hei
                 pixels[pos_x_prime[0], pos_y_prime[0]] = (pixel[0], pixels[pos_x_prime[0], pos_y_prime[0]][1], pixels[pos_x_prime[0], pos_y_prime[0]][2])
                 pixels[pos_x_prime[1], pos_y_prime[1]] = (pixels[pos_x_prime[1], pos_y_prime[1]][0], pixel[1], pixels[pos_x_prime[1], pos_y_prime[1]][2])
                 pixels[pos_x_prime[2], pos_y_prime[2]] = (pixels[pos_x_prime[2], pos_y_prime[2]][0], pixels[pos_x_prime[2], pos_y_prime[2]][1], pixel[2])
+    
+    print('LCA maximo: ', LCA)
+    print('LCA colores: ', LCAcolors[LCAarg])
+    print(f'LCA porcentaje: {LCApor} %')
+    
     return pixels

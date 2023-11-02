@@ -40,7 +40,7 @@ t = True
 
 while d == True:
     
-    print('Escoja el sistema de procesamiento: \n 1. Sistema Principal \n 2. Sistema Triplete \n 3. Interpolación \n 4. Gráficas \n 5. Sistema aberrado e interpolado \n 6. Sistema sin aberración e interpolado \n 7. Analisis de resultados')
+    print('Escoja el sistema de procesamiento: \n 1. Sistema con singletes \n 2. Sistema con tripletes \n 3. Interpolación \n 4. Gráficas \n 5. Sistema aberrado e interpolado \n 6. Sistema sin aberración e interpolado \n 7. Analisis de resultados')
     n = input()
     if(n == '1'):
         telescope.telescope_system('0', l, url)
