@@ -21,7 +21,7 @@ def LCA_num():
     l, l1=np.shape(R)
     
     for j in range(l):
-            u=int((l/2)-1)
+            u=int((l/2)-1)  # Selecciona una fila específica (fila del medio)
 
             # Abb: NDArray[float64]=np.zeros(l)
             Yar = Ra[u][j]
@@ -29,7 +29,7 @@ def LCA_num():
             Yr = R[u][j]
             Yb = B[u][j]
 
-            if Yar != 127:
+            if Yar != 127: # Analiza los valores de pixeles en las coordenadas especificas y determina que son valores distintos de 127
                 yr=j
 
             if Yab != 127:
@@ -41,8 +41,8 @@ def LCA_num():
             if Yb != 127:
                 yb2 = j     
                 
-    LCA = yr - yb
-    LCA2 = yr2 - yb2
+    LCA = yr - yb # Calcula la aberración cromática lateral de la imagen aberrada
+    LCA2 = yr2 - yb2  # Calcula la aberración cromática lateral de la imagen con aberracion corregida
 
     print(f'Aberracion cromatica lateral de la imagen aberrada: {LCA} px \nAberracion cromatica lateral de la imagen corregida: {LCA2} px')
 
