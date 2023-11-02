@@ -22,8 +22,7 @@ def telescope_system(m, l, url):
     PARALLEL_RAY = 1
 
     so = df.loc['mars','object']['so'] #Se lee la distancia objeto de marte del dataframe
-    do = df.loc['mars','object']['do']
-    dio = df.loc['objective','mainSystem']['di'] #Se lee la distancia imagen del sistema
+    dio = df.loc['objective','mainSystem']['di'] #diametro de la lente objetivo
     
     res = dio/height #Se calcula la resolucion
     
